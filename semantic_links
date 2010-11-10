@@ -1,0 +1,28 @@
+
+
+object 1 ---------> object 2
+
+Semantic Links:
+	is a - object 2 is an instance of object 1
+	has property - object 1 has property represented by object 2
+	contains - object 1 contains object 2
+	has action - object 1 can carry out action represented by object 2
+	requires - object 1 requires that object 2 exists in the same context
+	
+
+Behavors:
+	Follow Line:
+		avoid object
+		Find Line
+	avoid object:
+		move forward
+		turn left
+		turn right
+		sense distance
+		scan image
+	Find Line:
+		move forward
+		turn left
+		turn right
+		sense distance
+		scan image

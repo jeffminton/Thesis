@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<concept>
+	<title>movement</title>
+	<type>action</type>
+	<concept>
+		<title>travel</title>
+		<type>action</type>
+		<from>movement</from>
+		<posreqs>
+			<type>place</type>
+		</posreqs>
+	</concept>
+</concept>
+<concept>
+	<title>units</title>
+	<type>descriptor</type>
+	<concept>
+		<title>distance</title>
+		<type>descriptor</type>
+		<posreqs>
+			<type>value</type>
+		</posreqs>
+	</concept>
+	<concept>
+		<title>time</title>
+		<type>descriptor</type>
+		<posreqs>
+			<type>value</type>
+		</posreqs>
+	</concept>
+</concept>
+<concept>
+	<title>direction</title>
+	<type>place</type>
+	<posreqs>
+		<type>action</type>
+	</posreqs>
+</concept>
+<concept>
+	<title>number</title>
+	<type>value</type>
+	<posreqs>
+		<type>descriptor</type>
+	</posreqs>
+</concept>

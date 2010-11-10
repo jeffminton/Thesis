@@ -1,0 +1,11 @@
+red cup 
+	loCb = 90;
+	hiCb = 110;
+	loCr = 170;
+	hiCr = 190;
+
+blue cup
+	loCb = 165;
+	hiCb = 190;
+	loCr = 90;
+	hiCr = 105;

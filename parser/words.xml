@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<word>
+	<tenses>
+		<tense>move</tense>
+		<tense>moved</tense>
+		<tense>moving</tense>
+	</tenses>
+	<pos>verb</pos>
+	<concept>travel</concept>
+</word>
+<word>
+	<tenses>
+		<tense>go</tense>
+		<tense>going</tense>
+		<tense>went</tense>
+	</tenses>
+	<pos>verb</pos>
+	<concept>travel</concept>
+</word>
+<word>
+	<tenses>
+		<tense>turn</tense>
+		<tense>turned</tense>
+		<tense>turning</tense>
+	</tenses>
+	<pos>verb</pos>
+	<concept>travel</concept>
+</word>
+<word>
+	<tenses>
+		<tense>forward</tense>
+	</tenses>
+	<pos>noun</pos>
+	<concept>direction</concept>
+</word>
+<word>
+	<tenses>
+		<tense>reverse</tense>
+	</tenses>
+	<pos>noun</pos>
+	<concept>direction</concept>
+</word>
+<word>
+	<tenses>
+		<tense>left</tense>
+	</tenses>
+	<pos>noun</pos>
+	<concept>direction</concept>
+</word>
+<word>
+	<tenses>
+		<tense>right</tense>
+	</tenses>
+	<pos>noun</pos>
+	<concept>direction</concept>
+</word>
+<word>
+	<tenses>
+		<tense>number</tense>
+	</tenses>
+	<pos>adjective</pos>
+	<concept>number</concept>
+</word>
+<word>
+	<tenses>
+		<tense>feet</tense>
+	</tenses>
+	<pos>noun</pos>
+	<concept>distance</concept>
+</word>
+<word>
+	<tenses>
+		<tense>centimeters</tense>
+		<tense>cm</tense>
+	</tenses>
+	<pos>noun</pos>
+	<concept>distance</concept>
+</word>
+<word>
+	<tenses>
+		<tense>meters</tense>
+		<tense>m</tense>
+	</tenses>
+	<pos>noun</pos>
+	<concept>distance</concept>
+</word>
+<word>
+	<tenses>
+		<tense>inches</tense>
+	</tenses>
+	<pos>noun</pos>
+	<concept>distance</concept>
+</word>
+<word>
+	<tenses>
+		<tense>seconds</tense>
+	</tenses>
+	<pos>noun</pos>
+	<concept>time</concept>
+</word>
+<word>
+	<tenses>
+		<tense>minutes</tense>
+	</tenses>
+	<pos>noun</pos>
+	<concept>time</concept>
+</word>

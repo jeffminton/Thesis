@@ -1,0 +1,33 @@
+function [loCb hiCb loCr hiCr] = calibrate(img)
+    
+    loCb = -1;
+    hiCb = -1;
+    loCr = -1;
+    hiCr = -1;
+
+    imy = rgb2ycbcr(img);
+    mask = roipoly(img);
+    
+    [h w depth] = size(img);
+    
+    imCb = imy(:,:,2);
+    imCr = imy(:,:,3);
+    
+    for r = 1:h
+        for c = 1:w
+            if mask(r, c) == 1
+            if imCb(r,c) < loCb || loCb == -1
+                loCb = imCb(r, c);
+            end
+            if imCb(r, c) > hiCb || hiCb == -1
+                hiCb = imCb(r, c);
+            end
+            if imCr(r,c) < loCr || loCr == -1
+                loCr = imCr(r, c);
+            end
+            if imCr(r, c) > hiCr || hiCr == -1
+                hiCr = imCr(r, c);
+            end
+        end
+    end
+end
