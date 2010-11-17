@@ -14,9 +14,10 @@ function XML=mat2xml(MAT,VARNAME)
 % Jonas Almeida, almeidaj@musc.edu, 20 Aug 2002, XML4MAT Tbox
 
 if nargin<2;VARNAME='ans';end % if not provided make it a matlab answer variable
-w=whos('MAT');w.name=VARNAME;
+w=whos('MAT');
+w.name=VARNAME;
 
-XML=['<',w.name,' class="',w.class,'" size="',num2str(w.size),'">'];
+XML = ['<',w.name,' class="',w.class,'" size="',num2str(w.size), '" name="', w.name, '" id="', w.name, '">'];
 if strcmp(w.class,'char')
     XML=[XML,spcharin(MAT(:)')];
 elseif strcmp(w.class,'struct')
@@ -24,7 +25,9 @@ elseif strcmp(w.class,'struct')
     %struct_fields=[' fields="',names{1}];for j=2:length(names);struct_fields=[struct_fields,' ',names{j}];end;struct_fields=[struct_fields,'">'];XML=[XML(1:(end-1)),struct_fields];
     for i=1:prod(w.size)
         for j=1:length(names)
-            XML=[XML,mat2xml(eval(['MAT(i).',names{j}]),names{j})];
+            if(~strcmp(names(j), 'name') && ~strcmp(names(j), 'size') && ~strcmp(names(j), 'class') && ~strcmp(names(j), 'id')) 
+                XML=[XML,mat2xml(eval(['MAT(i).',names{j}]),names{j})];
+            end
         end
     end
 elseif strcmp(w.class,'cell')
