@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<concepts name="concepts">
+   <actions name="actions">
+      <movement name="movement">
+         <travel name="travel">
+            <posreqs name="posreqs">
+               <req>places</req>
+            </posreqs>
+         </travel>
+      </movement>
+   </actions>
+    <value name="value">
+        <number name="number">
+            <posreqs name="posreqs">
+                <req>descriptor</req>
+            </posreqs>
+        </number>
+        <color name="color">
+            <posreqs name="posreqs">
+                <req>
+                    descriptor
+                    <subreq>color</subreq>
+                </req>
+            </posreqs>
+        </color>
+    </value>
+    <descriptor name="descriptor">
+        <unit name="unit">
+            <distance name="distance">
+                <posreqs name="posreqs">
+                    <req>value</req>
+                </posreqs>
+            </distance>
+            <time name="time">
+                <posreqs name="posreqs">
+                    <req>value</req>
+                </posreqs>
+            </time>
+        </unit>
+        <color name="color">
+            <posreqs name="posreqs">
+                <req>
+                    value
+                    <subreq>color</subreq>
+                </req>
+            </posreqs>
+        </color>
+    </descriptor>
+    <place name="place">
+        <posreqs name="posreqs">
+            <req>action</req>
+        </posreqs>
+    </place>
+</concepts>
