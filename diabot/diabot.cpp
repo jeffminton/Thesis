@@ -1,12 +1,6 @@
-//#include "stdafx.h"
-#include "Cxml.h"
 #include <stdlib.h>
 #include <stdio.h>
-#ifdef _CHAR16T
-#define CHAR16_T
-#endif
 #include <engine.h>
-
 
 int main()
 {
