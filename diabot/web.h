@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 
+using namespace std;
+
 class Attr
 {
 	private:
@@ -29,7 +31,7 @@ class Attr
 		 * 				string value - initial attribute value
 		 * Return:		an Attr object
 		 */
-		 Attr(string key, string value):
+		 Attr(string key, string value);
 		
 		/**
 		 * Function:	Attr
@@ -37,7 +39,7 @@ class Attr
 		 * Parameters:	Attr &a - the attr object to copy
 		 * Return:		an Attr object
 		 */
-		Attr(Attr &a);
+		Attr(const Attr &a);
 		
 		/**
 		 * Function:	~Attr
@@ -81,9 +83,9 @@ class Node
 		//the node attributes 
 		Attr attrList;
 		//nodes value
-		string val;
+		string nodeVal;
 		//node name
-		string name;
+		string nodeName;
 		//map child name to child node
 		map<string, Node *> children;
 		//list of child nodes
@@ -120,7 +122,7 @@ class Node
 		 * 				string nodeVal - the value the node will hold
 		 * Return:		Node
 		 */
-		Node(string nodeName, string nodeVal);
+		Node(string nodeName, string nodeVal, Node *nodeParent);
 		
 		/**
 		 * Function:	Node
@@ -161,7 +163,7 @@ class Node
 		 * 				string value - the childs value, if any
 		 * Return:		bool - true success, false failure
 		 */
-		bool addChild(string name, string value);
+		void addChild(string name, string value);
 		
 		/**
 		 * Function:	getVal
