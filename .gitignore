@@ -1,3 +1,5 @@
 .~lock.*
 *.mexw32
 *.exe
+*.obj
+Thumbs.db

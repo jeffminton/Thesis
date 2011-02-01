@@ -1,9 +1,12 @@
 //web.h
 
-
 #include <map>
 #include <vector>
+#include <stack>
 #include <string>
+#include <iostream>
+#include <fstream>
+#include "lib/jeffutil.hpp"
 
 using namespace std;
 
@@ -54,7 +57,7 @@ class Attr
 		 * 				string value - atribute value
 		 * Return:		bool - true success, false failure
 		 */
-		bool addAttr(string key, string value);
+		void addAttr(string key, string value);
 		
 		/**
 		 * Function:	getKeyList
@@ -154,7 +157,7 @@ class Node
 		 * 				string value - the value to store
 		 * Return:		bool - true success, false failure
 		 */
-		bool addAttr(string key, string value);
+		void addAttr(string key, string value);
 		
 		/**
 		 * Function:	addChild
@@ -187,6 +190,16 @@ class Web
 		Node *root;
 		//the current node being looked at
 		Node *curr;
+		
+		/**
+		 * Function:	splitLines
+		 * Description:	Split a string using newline characters, each
+		 * 				index will be a line from the string
+		 * Parameters:	string str - the string to split
+		 * Return:		vector - vector containing lines
+		 */
+		void splitStr(string str, char delim, vector<string> &container);
+
 			
 	public:	
 	
@@ -227,7 +240,7 @@ class Web
 		 * 				data
 		 * Return:		bool - true success, false failure
 		 */
-		bool parseXML(FILE *xmlFile);
+		bool parseXMLFile(string xmlFileName);
 		
 		/**
 		 * Function:	writeXML

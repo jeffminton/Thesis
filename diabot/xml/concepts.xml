@@ -3,46 +3,46 @@
 	<action id="action">
 		<movement id="movement">
 			<travel id="travel">
-				<posreqs id="posreqs">
+				<reqgrp id="reqgrp">
 					<req parent="concepts">places</req>
-				</posreqs>
+				</reqgrp>
 			</travel>
 		</movement>
 	</action>
 	<value id="value">
 		<number id="number">
-			<posreqs id="posreqs">
+			<reqgrp id="reqgrp">
 				<req parent="concepts">descriptor</req>
-			</posreqs>
+			</reqgrp>
 		</number>
 		<color id="color">
-			<posreqs id="posreqs">
+			<reqgrp id="reqgrp">
 				<req parent="descriptor">color</req>
-			</posreqs>
+			</reqgrp>
 		</color>
 	</value>
 	<descriptor id="descriptor">
 		<unit id="unit">
 			<distance id="distance">
-				<posreqs id="posreqs">
+				<reqgrp id="reqgrp">
 					<req parent="concepts">value</req>
-				</posreqs>
+				</reqgrp>
 			</distance>
 			<time id="time">
-				<posreqs id="posreqs">
+				<reqgrp id="reqgrp">
 					<req parent="concepts">value</req>
-				</posreqs>
+				</reqgrp>
 			</time>
 		</unit>
 		<color id="color">
-			<posreqs id="posreqs">
+			<reqgrp id="reqgrp">
 				<req parent="value">color</req>
-			</posreqs>
+			</reqgrp>
 		</color>
 	</descriptor>
 	<place id="place">
-		<posreqs id="posreqs">
+		<reqgrp id="reqgrp">
 			<req parent="concepts">action</req>
-		</posreqs>
+		</reqgrp>
 	</place>
 </concepts>

@@ -1,0 +1,3 @@
+[submodule "diabot/lib"]
+	path = diabot/lib
+	url = https://jeffminton@github.com/jeffminton/lib.git

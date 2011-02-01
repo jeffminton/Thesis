@@ -29,7 +29,7 @@ Attr::Attr(const Attr &a)
 Attr::~Attr()
 {}
 
-bool Attr::addAttr(string key, string value)
+void Attr::addAttr(string key, string value)
 {
 	attrMap[key] = value;
 	keyList.push_back(value);
@@ -86,9 +86,9 @@ Attr Node::getAttrList()
 	return attrList;
 }
 
-bool Node::addAttr(string key, string value)
+void Node::addAttr(string key, string value)
 {
-	return attrList.addAttr(key, value);
+	attrList.addAttr(key, value);
 }
 
 void Node::addChild(string name, string value)
@@ -131,12 +131,37 @@ Web::~Web()
 
 bool Web::parseXML(string xml)
 {
+	stack<string> tagFlow;
+	string tag = "^<.+>&";
+	vector<string> lines;
+	
+	splitStr(xml, '\n', lines);
+	
+	for(int i = 0; i < (int) lines.size(); i++)
+	{
+		printf("%s\n", lines[i].c_str());
+	}
+	
 	return false;
 }
 
-bool Web::parseXML(FILE *xmlFile)
+bool Web::parseXMLFile(string xmlFileName)
 {
-	return false;
+	ifstream xmlFile;
+	char *xmlString;
+	int fileLen;
+	
+	xmlFile.open(xmlFileName.c_str(), ifstream::in);
+	
+	xmlFile.seekg (0, ios::end);
+	fileLen = (int) xmlFile.tellg();
+	xmlFile.seekg (0, ios::beg);
+	
+	xmlString = new char[fileLen];
+	
+	xmlFile.read(xmlString, fileLen);
+	
+	return parseXML(string(xmlString));
 }
 
 string Web::writeXML()
@@ -149,4 +174,18 @@ bool Web::writeXML(FILE *xmlFile)
 	return false;
 }
 
-
+void Web::splitStr(string str, char delim, vector<string> &container)
+{
+	size_t end;
+	string line;
+	
+	while( (end = str.find_first_of(delim)) != string::npos)
+	{
+		line = string(str.begin(), str.begin() + int(end)).c_str();
+		container.push_back(line);
+		str = string(str.begin() + int(end), str.end());
+	}
+	
+	line = string(str.begin(), str.end()).c_str();
+	container.push_back(string(line));
+}
