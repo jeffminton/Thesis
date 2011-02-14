@@ -47,8 +47,6 @@
     <ClCompile>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>C:\Program Files\MATLAB\R2010a Student\extern\include</AdditionalIncludeDirectories>
     </ClCompile>
@@ -77,13 +75,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Thesis\diabot\lib\jeffutil.hpp" />
-    <ClInclude Include="..\..\..\..\Thesis\diabot\web.h" />
+    <ClInclude Include="..\..\diabot\lib\util.h" />
+    <ClInclude Include="..\..\diabot\web.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Thesis\diabot\diabot.cpp" />
-    <ClCompile Include="..\..\..\..\Thesis\diabot\lib\jeffutil.cpp" />
-    <ClCompile Include="..\..\..\..\Thesis\diabot\web.cpp" />
+    <ClCompile Include="..\..\diabot\diabot.cpp" />
+    <ClCompile Include="..\..\diabot\lib\util.cpp" />
+    <ClCompile Include="..\..\diabot\web.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\diabot\xml\concepts.xml">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="..\..\diabot\xml\words.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

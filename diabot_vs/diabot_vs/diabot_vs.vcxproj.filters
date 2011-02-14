@@ -15,22 +15,30 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Thesis\diabot\web.h">
+    <ClInclude Include="..\..\diabot\web.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Thesis\diabot\lib\jeffutil.hpp">
+    <ClInclude Include="..\..\diabot\lib\util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Thesis\diabot\lib\jeffutil.cpp">
+    <ClCompile Include="..\..\diabot\diabot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Thesis\diabot\diabot.cpp">
+    <ClCompile Include="..\..\diabot\web.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Thesis\diabot\web.cpp">
+    <ClCompile Include="..\..\diabot\lib\util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\diabot\xml\concepts.xml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\diabot\xml\words.xml">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

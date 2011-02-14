@@ -6,7 +6,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include "lib/jeffutil.hpp"
+#include "lib\util.h"
 
 using namespace std;
 
@@ -84,7 +84,7 @@ class Node
 		/**************************************************************/
 		
 		//the node attributes 
-		Attr attrList;
+		Attr *attrList;
 		//nodes value
 		string nodeVal;
 		//node name
@@ -93,22 +93,18 @@ class Node
 		map<string, Node *> children;
 		//list of child nodes
 		vector<string> childNames;
+		//list of req groups
+		vector<Node *> reqs;
+		//symmetric vectors contain required concepts, their parents
+		//and pointers to the required concept nodes
+		vector<string> reqParent;
+		vector<string> reqConcept;
+		vector<Node *> reqPtr;
 		//pointer to parent node
 		Node *parent;
 		//name of parent node
 		string parentName;
 		
-		/**************************************************************/
-		/**     Functions                                             */
-		/**************************************************************/
-		
-		/**
-		 * Function: 	setVal
-		 * Description:	set the nodes value
-		 * Parameters:	string val - the value to set
-		 * Return:		bool - true success, false fail
-		 */
-		bool setVal(string val);
 	
 	public:
 		/**
@@ -125,7 +121,7 @@ class Node
 		 * 				string nodeVal - the value the node will hold
 		 * Return:		Node
 		 */
-		Node(string nodeName, string nodeVal, Node *nodeParent);
+		Node(string name, Node *nodeParent);
 		
 		/**
 		 * Function:	Node
@@ -146,7 +142,7 @@ class Node
 		 * Description:	get a nodes attribute object
 		 * Return:		Attr - the nodes Attr object
 		 */
-		Attr getAttrList();
+		Attr *getAttrList();
 		
 		/**
 		 * Function:	addAttr
@@ -166,14 +162,66 @@ class Node
 		 * 				string value - the childs value, if any
 		 * Return:		bool - true success, false failure
 		 */
-		void addChild(string name, string value);
+		void addChild(string name);
 		
+		/**
+		 * Function: 	setVal
+		 * Description:	set the nodes value
+		 * Parameters:	string val - the value to set
+		 * Return:		bool - true success, false fail
+		 */
+		void setVal(string val);
+
+		/**
+		Function:		setReqPtr
+		Description:	set the pointer in the symetic array of
+						pointers to concepts
+		Parameters:		int idx - index to store the pointer in
+		*/
+		void setReqPtr(int idx, Node *ptr);
+
+		/**
+		Function:		addReqGrp
+		Description:	add a requirment group to the reqs vector
+		Return:			int - the index in the reqs vector that
+						the group is stored in
+		*/
+		int addReqGrp();
+
+		/**
+		Function:		addReq
+		Description:	add requirments to the reqParent and reqConcept vector
+		*/
+		void addReq(string reqParentStr, string reqStr);
+
 		/**
 		 * Function:	getVal
 		 * Description:	get the nodes value
 		 * Return:		string - the nodes value
 		 */
 		string getVal();
+
+		/**
+		Function:		getParent
+		Description:	return a pointer to the nodes parent
+		Return:			Node * - pointer to parent
+		*/
+		Node * getParent();
+
+		/**
+		Function:		getChild
+		Description:	return a pointer to a child
+		Parameters:		string childName - name of child to return
+		Return:			Node * - pointer to child
+		*/
+		Node * getChild(string childName);
+
+		/**
+		Function:		getChildren
+		Description:	return a list of child names
+		Return:			vector<string> - the names of children
+		*/
+		vector<string> getChildren();
 		
 		/**
 		 * Function:	getName
@@ -181,6 +229,42 @@ class Node
 		 * Return:		string - the nodes name
 		 */
 		string getName();
+
+		/**
+		Function:		getNumReqGrp
+		Description:	get the number of reqgroups the node has
+		Return:			int - the number of reqgroups
+		*/
+		int getNumReqGrp();
+
+		/**
+		Function:		getReqGrp
+		Description:	return a pointer to the reqgrp at idx
+		Parameters:		int idx - index of reqgrp in reqs vector
+		Return:			Node * - pointer to reqgrp
+		*/
+		Node * getReqGrp(int idx);
+
+		/**
+		Function:		getReqConcept
+		Description:	return a list of required concepts
+		Return:			vector<string> - vector of required concepts
+		*/
+		vector<string> getReqConcept();
+
+		/**
+		Function:		getReqParent
+		Description:	return the list of requried concept's parents
+		Return:			vector<string> - vector of required concept's parents
+		*/
+		vector<string> getReqParent();
+
+		/**
+		Function:		getNumChildren
+		Description:	returns the number of child nodes
+		Return:			int - number of children
+		*/
+		int getNumChildren();
 };
 
 class Web
@@ -190,6 +274,8 @@ class Web
 		Node *root;
 		//the current node being looked at
 		Node *curr;
+		//Util object to use
+		Util myUtil;
 		
 		/**
 		 * Function:	splitLines
@@ -231,6 +317,13 @@ class Web
 		 * Return:		bool - true success, false failure
 		 */
 		bool parseXML(string xml);
+
+		/**
+		Function:		postLink
+		Description:	link requirments to other parts of the web
+		Return:			bool - true if success, false if failure
+		*/
+		bool postLink();
 		
 		/**
 		 * Function:	parseXML
@@ -248,7 +341,7 @@ class Web
 		 * 				represents a web
 		 * Return:		string - string containing xml data
 		 */
-		string writeXML();
+		string writeXML(Node *currNode, string prefix);
 		
 		/**
 		 * Function:	writeXML
@@ -256,5 +349,23 @@ class Web
 		 * Parameters:	FILE *xmlFile - file to write to
 		 * Return:		bool - true success, false failure
 		 */
-		bool writeXML(FILE *xmlFile);
+		bool writeXML(string xmlFileName);
+
+		/**
+		Function:		linkReqs
+		Description:	Recurse through web to find all reqs
+						and link them to the concepts nodes
+		Parameters:		Node *currNode - the current Node
+		Return:			bool - true success, false failure
+		*/
+		bool linkReqs(Node *currNode);
+
+		/**
+		Function:		search
+		Description:	return a node that matches the search terms
+		Parameters:		string nodeName - the node to find
+						string nodeParent - the name of nodes parent
+		Return:			Node * - pointer to the desired node
+		*/
+		Node * search(Node *currNode, string nodeName, string nodeParent);
 };

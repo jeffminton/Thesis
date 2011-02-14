@@ -28,7 +28,11 @@ int main()
 	}
 	printf("engine open\n");
 	
-	concepts.parseXMLFile("xml/concepts.xml");
+	concepts.parseXMLFile("C:/Users/ffef/Documents/Thesis/diabot/xml/concepts.xml");
 	
 	printf("parse done\n");
+
+	concepts.writeXML("conceptsOut.xml");
+
+	printf("write done\n");
 }

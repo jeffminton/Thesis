@@ -1,0 +1,47 @@
+<concepts id="concepts">
+	<action id="action">
+		<movement id="movement">
+			<travel id="travel">
+				<reqgrp id="reqgrp">
+					<req parent="concepts">places</req>
+				</reqgrp>
+			</travel>
+		</movement>
+	</action>
+	<value id="value">
+		<number id="number">
+			<reqgrp id="reqgrp">
+				<req parent="concepts">descriptor</req>
+			</reqgrp>
+		</number>
+		<color id="color">
+			<reqgrp id="reqgrp">
+				<req parent="descriptor">color</req>
+			</reqgrp>
+		</color>
+	</value>
+	<descriptor id="descriptor">
+		<unit id="unit">
+			<distance id="distance">
+				<reqgrp id="reqgrp">
+					<req parent="concepts">value</req>
+				</reqgrp>
+			</distance>
+			<time id="time">
+				<reqgrp id="reqgrp">
+					<req parent="concepts">value</req>
+				</reqgrp>
+			</time>
+		</unit>
+		<color id="color">
+			<reqgrp id="reqgrp">
+				<req parent="value">color</req>
+			</reqgrp>
+		</color>
+	</descriptor>
+	<place id="place">
+		<reqgrp id="reqgrp">
+			<req parent="concepts">action</req>
+		</reqgrp>
+	</place>
+</concepts>
