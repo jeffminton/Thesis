@@ -150,7 +150,8 @@ Node * Node::getParent()
 
 Node * Node::getChild(string childName)
 {
-	return children[childName];
+	Node *found = children[childName];
+	return found;
 }
 
 string Node::getName()
@@ -225,8 +226,6 @@ bool Web::parseXML(string xml)
 	//attrKey - the key for an attribute
 	//attrVal - an attributes value
 	string name, openTag, closeTag, value, attrKey, attrVal;
-	
-	myUtil.strip(xml);
 	
 	splitStr(xml, '\n', lines);
 	
@@ -333,7 +332,7 @@ bool Web::parseXML(string xml)
 				}
 			}
 		}
-		else if(!myUtil.match(lines[i], IGNORE_TAG))
+		else if(!myUtil.match(lines[i], IGNORE_TAG) && !tagFlow.empty())
 		{
 			curr->setVal(lines[i]);
 		}
@@ -365,15 +364,16 @@ bool Web::linkReqs(Node *currNode)
 			if(foundPtr != NULL)
 			{
 				currNode->setReqPtr(i, foundPtr);
+				result = true;
+				printf("Found link for %s to %s child of %s\n", currNode->getName().c_str(), reqConcepts[i].c_str(), reqParents[i].c_str());
 			}
 			else
 			{
 				printf("couldn't find required node to link\n");
-				return false;
 			}
 		}
 
-		return true;
+		return result;
 	}
 	else
 	{
@@ -402,19 +402,24 @@ Node * Web::search(Node *currNode, string nodeName, string nodeParent)
 {
 	if(currNode->getName() == nodeName && currNode->getParent()->getName() == nodeParent)
 	{
-		return currNode;
+		Node *found = currNode;
+		return found;
 	}
 	else if(currNode->getName() == nodeParent)
 	{
-		vector<string> children = currNode->getChildren();
+		/*vector<string> children = currNode->getChildren();
 
 		for(int i = 0; i < children.size(); i++)
 		{
 			if(children[i] == nodeName)
 			{
-				return currNode->getChild(children[i]);
+				Node *found = currNode->getChild(children[i]);
+				return found;
 			}
-		}
+		}*/
+
+		Node *found = currNode->getChild(nodeName);
+		return found;
 	}
 	else
 	{
@@ -422,7 +427,7 @@ Node * Web::search(Node *currNode, string nodeName, string nodeParent)
 
 		if(children.empty())
 		{
-			return NULL;
+			return (Node *) NULL;
 		}
 		else
 		{
@@ -435,6 +440,8 @@ Node * Web::search(Node *currNode, string nodeName, string nodeParent)
 					return desiredNode;
 				}
 			}
+
+			return (Node *) 0;
 		}
 	}
 }

@@ -3,7 +3,7 @@
 		<movement id="movement">
 			<travel id="travel">
 				<reqgrp id="reqgrp">
-					<req parent="description">place</req>
+					<req parent="descriptor">place</req>
 				</reqgrp>
 				<reqgrp id="reqgrp">
 					<req parent="unit">distance</req>
