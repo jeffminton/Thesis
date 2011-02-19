@@ -547,7 +547,7 @@ void Web::splitStr(string str, char delim, vector<string> &container)
 	
 	while( (end = str.find_first_of(delim)) != string::npos)
 	{
-		printf("split loop %d times\n", times);
+		//printf("split loop %d times\n", times);
 		times++;
 		line = string(str.begin(), str.begin() + int(end) + 1);
 		myUtil.strip(line);
@@ -558,4 +558,147 @@ void Web::splitStr(string str, char delim, vector<string> &container)
 	line = string(str.begin(), str.end());
 	myUtil.strip(line);
 	container.push_back(string(line));
+}
+
+
+
+bool Web::writeGraph(string graphFileName, string graphDef)
+{
+	ofstream graphFile;
+	
+	graphFile.open(graphFileName.c_str(), ofstream::out);
+
+	graphFile.write(graphDef.c_str(), graphDef.length());
+	
+	graphFile.close();
+
+	return true;
+}
+
+
+void Web::genGraph()
+{
+	string dotText = "digraph web{\n";
+
+	//dotText += graphNodes(root);
+	dotText += graphEdges(root);
+
+	dotText += "}\n";
+
+	writeGraph("web.gv", dotText);
+}
+
+/*
+"node6" [
+label = "<f0> 0xf7fc4380| <f1> | <f2> |1"
+shape = "record"
+]*/
+
+string Web::graphEdges(Node *currNode)
+{
+	string graphString = "";
+	char strBuild[2048];
+	Node *currReq;
+	Node *parentNode;
+	string currString, reqString, reqPartString;
+	
+	if(currNode->getNumReqGrp() > 0)
+	{
+		//nodeName from parentName
+		sprintf(strBuild, "\"%s\\n\\nparent=%s\"", currNode->getName().c_str(),
+			currNode->getParent()->getName().c_str());
+		currString = strBuild;
+		
+		for(int i = 0; i < currNode->getNumReqGrp(); i++)
+		{
+			currReq = currNode->getReqGrp(i);
+			vector<string> reqConcepts, reqParents;
+			reqConcepts = currReq->getReqConcept();
+			reqParents = currReq->getReqParent();
+
+			//nodeName reqgrp 0
+			sprintf(strBuild, "\"%s reqgrp %d\"",
+				currNode->getName().c_str(), i);
+			reqString = strBuild;
+
+			graphString += currString + " -> " + reqString + ";\n";
+
+			for(int j = 0; j < reqConcepts.size(); j++)
+			{
+				sprintf(strBuild, "%s -> \"%s reqgrp %d req %d\\n\\n%s from %s\" [color=red];\n",
+					reqString.c_str(), currNode->getName().c_str(), i, j, reqConcepts[j].c_str(),
+					reqParents[j].c_str());
+				graphString += strBuild;
+			}
+		}
+
+		return graphString;
+	}
+	else
+	{
+		vector<string> children = currNode->getChildren();
+
+		//nodeName from parentName
+		sprintf(strBuild, "\"%s\\n\\nparent=%s\"", currNode->getName().c_str(),
+			(currNode != root ? currNode->getParent()->getName() : "").c_str());
+		currString = strBuild;
+
+		for(int i = 0; i < children.size(); i++)
+		{
+			//"nodeName from parentName" -> "nodeName from parentName;"
+			sprintf(strBuild, "%s -> \"%s\\n\\nparent=%s\";\n",
+				currString.c_str(), currNode->getChild(children[i])->getName().c_str(),
+				currNode->getName().c_str());
+			graphString += strBuild;
+			graphString += graphEdges(currNode->getChild(children[i]));
+		}
+
+		return graphString;
+	}
+}
+
+string Web::graphNodes(Node *currNode)
+{
+	string graphString = "";
+	char strBuild[2048];
+	Node *parentNode;
+	Node *currReq;
+
+	if(currNode->getNumReqGrp() > 0)
+	{
+		//nodeName from parentName
+		sprintf(strBuild, "\"%s from %s\";\n", currNode->getName().c_str(),
+			currNode->getParent()->getName().c_str());
+		graphString += strBuild;
+		
+		vector<string> reqConcepts, reqParents;
+		for(int i = 0; i < currNode->getNumReqGrp(); i++)
+		{
+			currReq = currNode->getReqGrp(i);
+			reqConcepts = currReq->getReqConcept();
+			reqParents = currReq->getReqParent();
+
+			//nodeName reqgrp 0
+			sprintf(strBuild, "\"%s reqgrp %d\";\n",
+				currNode->getName().c_str(), i);
+			graphString += strBuild;
+		}
+		return graphString;
+	}
+	else
+	{
+		vector<string> children = currNode->getChildren();
+
+		//nodeName from parentName
+		sprintf(strBuild, "\"%s from %s\";\n", currNode->getName().c_str(),
+			(currNode != root ? currNode->getParent()->getName() : "").c_str());
+		graphString += strBuild;
+
+		for(int i = 0; i < children.size(); i++)
+		{
+			 graphString += graphNodes(currNode->getChild(children[i]));
+		}
+
+		return graphString;
+	}
 }

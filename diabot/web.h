@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <gvc.h>
 #include "lib\util.h"
 
 using namespace std;
@@ -368,4 +369,27 @@ class Web
 		Return:			Node * - pointer to the desired node
 		*/
 		Node * search(Node *currNode, string nodeName, string nodeParent);
+
+
+		bool writeGraph(string graphFileName, string graphDef);
+
+		/**
+		Function:		genGraph
+		Description:	generate a visual representation of the web
+		*/
+		void genGraph();
+
+		/**
+		Function:		graphRecurse
+		Description:	recurse through the web generating nodes in a graph
+						uses breadth-first search
+		Parameters:		Agraph_t g - the graph
+						Node *curr - current node
+						Agnode_t n - current node in graph
+		*/
+		string graphNodes(Node *currNode);
+
+		string graphEdges(Node *currNode);
+
+		string int2string(int i);
 };
