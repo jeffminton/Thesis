@@ -1,0 +1,80 @@
+<words>
+	<word>
+		<tense>centimeters</tense>
+		<tense>cm</tense>
+		<concept parent="unit">distance</concept>
+		<pos>noun</pos>
+	</word>
+	<word>
+		<tense>feet</tense>
+		<concept parent="unit">distance</concept>
+		<pos>noun</pos>
+	</word>
+	<word>
+		<tense>forward</tense>
+		<concept parent="descriptor">direction</concept>
+		<pos>noun</pos>
+	</word>
+	<word>
+		<tense>go</tense>
+		<tense>going</tense>
+		<tense>went</tense>
+		<concept parent="movement">travel</concept>
+		<pos>verb</pos>
+	</word>
+	<word>
+		<tense>inches</tense>
+		<concept parent="unit">distance</concept>
+		<pos>noun</pos>
+	</word>
+	<word>
+		<tense>left</tense>
+		<concept parent="descriptor">direction</concept>
+		<pos>noun</pos>
+	</word>
+	<word>
+		<tense>meters</tense>
+		<tense>m</tense>
+		<concept parent="unit">distance</concept>
+		<pos>noun</pos>
+	</word>
+	<word>
+		<tense>minutes</tense>
+		<concept parent="unit">time</concept>
+		<pos>noun</pos>
+	</word>
+	<word>
+		<tense>move</tense>
+		<tense>moved</tense>
+		<tense>moving</tense>
+		<concept parent="movement">travel</concept>
+		<pos>verb</pos>
+	</word>
+	<word>
+		<tense>number</tense>
+		<concept parent="value">number</concept>
+		<pos>adjective</pos>
+	</word>
+	<word>
+		<tense>reverse</tense>
+		<concept parent="descriptor">direction</concept>
+		<pos>noun</pos>
+	</word>
+	<word>
+		<tense>right</tense>
+		<concept parent="descriptor">direction</concept>
+		<pos>noun</pos>
+	</word>
+	<word>
+		<tense>seconds</tense>
+		<concept parent="unit">time</concept>
+		<pos>noun</pos>
+	</word>
+	<word>
+		<tense>turn</tense>
+		<tense>turned</tense>
+		<tense>turning</tense>
+		<concept parent="movement">travel</concept>
+		<pos>verb</pos>
+	</word>
+</words>

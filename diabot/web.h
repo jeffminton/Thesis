@@ -75,7 +75,8 @@ class Attr
 		 */
 		string getAttr(string key);
 };
-	
+
+
 class Node
 {
 	private:
@@ -268,6 +269,78 @@ class Node
 		int getNumChildren();
 };
 
+
+
+class Word
+{
+	private:
+		//concept the word points to
+		Node *concept;
+		//part of speech the word represents
+		string pos;
+		//list of this words other tenses
+		vector<string> tenses;
+
+	public:
+		/**
+		 * Function:	Word
+		 * Description:	Zero param constructor
+		 * Return:		a Word
+		 */
+		Word();
+		
+		/**
+		 * Function:	Word
+		 * Description:	Parameterized contructor
+		 * Parameters:	string pos - the pos of the word
+		 * 				Node *concept - the Node holding concept it represents
+		 * Return:		Word
+		 */
+		Word(string wordPOS, Node *wordsConcept);
+		
+		/**
+		 * Function:	Word
+		 * Description:	Copy constructor
+		 * Parameters:	Word *n - Word to copy
+		 * Return:		Word
+		 */
+		Word(Word &n);
+		
+		/**
+		 * Function:	~Word
+		 * Description:	Destructor, colled when destroying object
+		 */
+		~Word();
+
+		/**
+		Function:		getConcept
+		Description:	return the pointer to the concept
+		Return:			Node * - the concept
+		*/
+		Node * getConcept();
+
+		/**
+		Function:		getPOS
+		Description:	return the words POS
+		Return:			string - the POS of the word
+		*/
+		string getPOS();
+
+		/**
+		Function:		getTenses
+		Description:	return the list of tenses this word has
+		Return:			vector<string> - list of tenses
+		*/
+		vector<string> getTenses();
+
+		/**
+		Function:		addTense
+		Description:	add a word tense to the list of tenses
+		Parameters:		string tense - the tense to add
+		*/
+		void addTense(string tense);
+};
+
 class Web
 {
 	private:
@@ -275,6 +348,8 @@ class Web
 		Node *root;
 		//the current node being looked at
 		Node *curr;
+		//hash table that maps words to concepts
+		map<string, vector<Word *>> words, wordsBAK;
 		//Util object to use
 		Util myUtil;
 		
@@ -320,6 +395,24 @@ class Web
 		bool parseXML(string xml);
 
 		/**
+		Function:		parseConcepts
+		Description:	parse a vector containing xml data into a web
+						of concepts
+		Parameters:		vector<string> xml - the string containing xml data
+		Return:			bool - true success false failure
+		*/
+		bool parseConcepts(vector<string> xml);
+
+		/**
+		Function:		parseWords
+		Description:	parse a vector containing xml data into a hash
+						table of words
+		Parameters:		vector<string> xml - the string containing xml data
+		Return:			bool - true success false failure
+		*/
+		bool parseWords(vector<string> xml);
+
+		/**
 		Function:		postLink
 		Description:	link requirments to other parts of the web
 		Return:			bool - true if success, false if failure
@@ -335,6 +428,14 @@ class Web
 		 * Return:		bool - true success, false failure
 		 */
 		bool parseXMLFile(string xmlFileName);
+
+		/**
+		Function:		writeWordsXML
+		Description:	write a string of XML data that defines the words in the
+						words map
+		Return:			string - the XML data
+		*/
+		string writeWordsXML();
 		
 		/**
 		 * Function:	writeXML
@@ -350,7 +451,7 @@ class Web
 		 * Parameters:	FILE *xmlFile - file to write to
 		 * Return:		bool - true success, false failure
 		 */
-		bool writeXML(string xmlFileName);
+		bool writeXML(string xmlFilePath);
 
 		/**
 		Function:		linkReqs
@@ -370,8 +471,13 @@ class Web
 		*/
 		Node * search(Node *currNode, string nodeName, string nodeParent);
 
-
-		bool writeGraph(string graphFileName, string graphDef);
+		/**
+		Function:		writeGraph
+		Description:	generate DOT code to represent the graph visualy
+		Parameters:		string graphFileName - name of file to store dot code in
+						string graphDef - the DOT code
+		*/
+		void writeGraph(string graphFileName, string graphDef);
 
 		/**
 		Function:		genGraph
@@ -380,16 +486,18 @@ class Web
 		void genGraph();
 
 		/**
-		Function:		graphRecurse
+		Function:		graphNodes
 		Description:	recurse through the web generating nodes in a graph
 						uses breadth-first search
-		Parameters:		Agraph_t g - the graph
-						Node *curr - current node
-						Agnode_t n - current node in graph
+		Parameters:		Node *curr - current node
 		*/
 		string graphNodes(Node *currNode);
 
+		/**
+		Function:		graphEdges
+		Description:	recurse through the web generating a graph
+		Parameters:		Node *curr - current node
+		Return:			string - the string of DOT commands
+		*/
 		string graphEdges(Node *currNode);
-
-		string int2string(int i);
 };

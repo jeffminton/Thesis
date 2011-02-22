@@ -5,11 +5,11 @@
 				<reqgrp id="reqgrp">
 					<req parent="descriptor">place</req>
 				</reqgrp>
-				<reqgrp>
+				<reqgrp id="reqgrp">
 					<req parent="unit">distance</req>
 					<req parent="descriptor">direction</req>
 				</reqgrp>
-				<reqgrp>
+				<reqgrp id="reqgrp">
 					<req parent="unit">time</req>
 					<req parent="descriptor">direction</req>
 				</reqgrp>
@@ -34,8 +34,8 @@
 				<req parent="concepts">action</req>
 			</reqgrp>
 		</place>
-		<direction>
-			<reqgrp>
+		<direction id="direction">
+			<reqgrp id="reqgrp">
 				<req parent="concepts">action</req>
 			</reqgrp>
 		</direction>

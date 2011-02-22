@@ -24,7 +24,10 @@ Attr::Attr(string key, string value)
 }
 
 Attr::Attr(const Attr &a)
-{}
+{
+	attrMap = a.attrMap;
+	keyList = a.keyList;
+}
 
 Attr::~Attr()
 {}
@@ -47,6 +50,7 @@ string Attr::getAttr(string key)
 {
 	return attrMap[key];
 }
+
 
 
 /**********************************************************************/
@@ -93,6 +97,16 @@ Node::Node(string name, Node *nodeParent)
 
 Node::Node(Node &n)
 {
+	attrList = n.getAttrList();
+	nodeName = n.getName();
+	children = n.children;
+	childNames = n.getChildren();
+	reqs = n.reqs;
+	reqParent = n.reqParent;
+	reqConcept = n.reqConcept;
+	reqPtr = n.reqPtr;
+	parent = n.getParent();
+	parentName = n.parentName;
 }
 
 Node::~Node()
@@ -190,12 +204,56 @@ vector<string> Node::getChildren()
 }
 
 
+
+
+/**********************************************************************/
+/**
+Class:		Word
+*/
+/**********************************************************************/
+Word::Word()
+{
+	pos = "";
+	concept = (Node *) 0;
+}
+
+Word::Word(string wordPOS, Node *wordsConcept)
+{
+	pos = wordPOS;
+	concept = wordsConcept;
+}
+
+Word::Word(Word &w)
+{
+	pos = w.getPOS();
+	concept = w.getConcept();
+}
+
+Node * Word::getConcept()
+{
+	return concept;
+}
+
+string Word::getPOS()
+{
+	return pos;
+}
+
+vector<string> Word::getTenses()
+{
+	return tenses;
+}
+
+void Word::addTense(string tense)
+{
+	tenses.push_back(tense);
+}
+
 /**********************************************************************/
 /**
  * Class:	Web
  */
 /**********************************************************************/
-
 Web::Web()
 {
 	root = NULL;
@@ -205,6 +263,10 @@ Web::Web()
 
 Web::Web(Web &w)
 {
+	root = w.root;
+	curr = w.curr;
+	words = w.words;
+	myUtil = w.myUtil;
 }
 
 Web::~Web()
@@ -213,12 +275,175 @@ Web::~Web()
 
 bool Web::parseXML(string xml)
 {
+	int iter = 0;
+	vector<string> lines;
+	string rootName;
+
+	splitStr(xml, '\n', lines);
+
+	while(myUtil.match(lines[iter], IGNORE_TAG))
+	{
+		iter++;
+	}
+
+	rootName = myUtil.getMatch(lines[iter], OPEN_TAG_NAME, 1);
+
+	if(rootName == "concepts")
+	{
+		return parseConcepts(lines);
+	}
+	else if(rootName == "words")
+	{
+		return parseWords(lines);
+	}
+	else
+	{
+		printf("Invalid root name in xml file\n");
+		return false;
+	}
+}
+
+
+bool Web::parseWords(vector<string> xml)
+{
+	//a stack conataining all open tags, checks that
+	//closing tag matches the last opened tag
+	stack<string> tagFlow, tenses;
+	//attributes - contains attributes for a tag
+	vector<string> attributes;
+	//vector of Word objects that a word points to
+	vector<Word *> wordArray;
+	//name - tag name
+	//openTag - open tag in a one line tag
+	//closeTag - close tag in a one line tag
+	//value - value in a one line tag
+	//attrKey - the key for an attribute
+	//attrVal - an attributes value
+	//nextPOS - the pos for the current word
+	//currWord - the current word being defined
+	string name, openTag, closeTag, value, attrKey, attrVal, nextPOS, currWord;
+	//nextConcept - the concept for the current word
+	Node *nextConcept;
+	//tempWord - a pointer to a temporary word object
+	Word *tempWord;
+	
+	for(int i = 0; i < (int) xml.size(); i++)
+	{
+		
+		if(myUtil.match(xml[i], TAG) && !myUtil.match(xml[i], IGNORE_TAG))
+		{
+			if(myUtil.match(xml[i], CLOSE_TAG))
+			{
+				name = myUtil.getMatch(xml[i], CLOSE_TAG_NAME, 1);
+				if(tagFlow.top() != name)
+				{
+					printf("Invalid closing tag\n");
+					return false;
+				}
+
+				if(name == "word")
+				{
+					tempWord = new Word(nextPOS, nextConcept);
+
+					while(!tenses.empty())
+					{
+						currWord = tenses.top();
+						tempWord->addTense(currWord);
+						wordArray = words[currWord];
+						wordArray.push_back(tempWord);
+						words[currWord] = wordArray;
+						tenses.pop();
+					}
+
+					nextConcept = (Node *) 0;
+					nextPOS = "";
+				}
+				tagFlow.pop();
+				printf("Close Tag: %s\n", name.c_str());
+				//curr = curr->getParent();
+			}
+			else if(myUtil.match(xml[i], ONE_LINE_TAG))
+			{
+				printf("One Line Tag: %s\n", xml[i].c_str());
+			}
+			else if(myUtil.match(xml[i], ONE_LINE_OPEN_CLOSE))
+			{
+				printf("One line open close tag: %s\n", xml[i].c_str());
+
+				string currLine = xml[i];
+				string closeName;
+
+				openTag = myUtil.getMatch(currLine, ONE_LINE_OPEN_CLOSE, 1);
+				name = myUtil.getMatch(openTag, OPEN_TAG_NAME, 1);
+				attributes = myUtil.split(openTag, ATTRIBUTE);
+				value = myUtil.getMatch(currLine, ONE_LINE_OPEN_CLOSE, 2);
+				closeTag = myUtil.getMatch(currLine, ONE_LINE_OPEN_CLOSE, 3);
+				closeName = myUtil.getMatch(closeTag, CLOSE_TAG_NAME, 1);
+
+				if(name != closeName)
+				{
+					printf("invalid close tag\n");
+					return false;
+				}
+
+				if(name == "tense")
+				{
+					/*attrKey = myUtil.getMatch(attributes[0], ATTR_SPLIT, 1);
+					attrVal = myUtil.getMatch(attributes[0], ATTR_SPLIT, 2);*/
+					tenses.push(value);
+				}
+				else if(name == "pos")
+				{
+					nextPOS = value;
+				}
+				else if(name == "concept")
+				{
+					attrKey = myUtil.getMatch(attributes[0], ATTR_SPLIT, 1);
+					attrVal = myUtil.getMatch(attributes[0], ATTR_SPLIT, 2);
+					if(attrKey != "parent")
+					{
+						printf("invalid concept tag, no parent described\n");
+						return false;
+					}
+					nextConcept = search(root, value, attrVal);
+				}
+				else
+				{
+					printf("invalid tag in word group\n");
+					return false;
+				}
+			}
+			else
+			{
+				attributes = myUtil.split(xml[i], ATTRIBUTE);
+				name = myUtil.getMatch(xml[i], OPEN_TAG_NAME, 1);
+				printf("Open Tag: %s\n", name.c_str());
+				tagFlow.push(name);
+				for(int i = 0; i < attributes.size(); i++)
+				{
+					printf("Attr %d: %s\n", i, attributes[i].c_str());
+				}
+			}
+		}
+	}
+
+	if(!linkReqs(root))
+	{
+		printf("Requirment linking failed\n");
+		return false;
+	}
+	
+	return true;
+}
+
+
+bool Web::parseConcepts(vector<string> xml)
+{
 	//a stack conataining all open tags, checks that
 	//closing tag matches the last opened tag
 	stack<string> tagFlow;
-	//lines - contains all lines in xml
 	//attributes - contains attributes for a tag
-	vector<string> lines, attributes;
+	vector<string> attributes;
 	//name - tag name
 	//openTag - open tag in a one line tag
 	//closeTag - close tag in a one line tag
@@ -227,16 +452,14 @@ bool Web::parseXML(string xml)
 	//attrVal - an attributes value
 	string name, openTag, closeTag, value, attrKey, attrVal;
 	
-	splitStr(xml, '\n', lines);
-	
-	for(int i = 0; i < (int) lines.size(); i++)
+	for(int i = 0; i < (int) xml.size(); i++)
 	{
 		
-		if(myUtil.match(lines[i], TAG) && !myUtil.match(lines[i], IGNORE_TAG))
+		if(myUtil.match(xml[i], TAG) && !myUtil.match(xml[i], IGNORE_TAG))
 		{
-			if(myUtil.match(lines[i], CLOSE_TAG))
+			if(myUtil.match(xml[i], CLOSE_TAG))
 			{
-				name = myUtil.getMatch(lines[i], CLOSE_TAG_NAME, 1);
+				name = myUtil.getMatch(xml[i], CLOSE_TAG_NAME, 1);
 				if(tagFlow.top() != name)
 				{
 					printf("Invalid closing tag\n");
@@ -246,15 +469,15 @@ bool Web::parseXML(string xml)
 				printf("Close Tag: %s\n", name.c_str());
 				curr = curr->getParent();
 			}
-			else if(myUtil.match(lines[i], ONE_LINE_TAG))
+			else if(myUtil.match(xml[i], ONE_LINE_TAG))
 			{
-				printf("One Line Tag: %s\n", lines[i].c_str());
+				printf("One Line Tag: %s\n", xml[i].c_str());
 			}
-			else if(myUtil.match(lines[i], ONE_LINE_OPEN_CLOSE))
+			else if(myUtil.match(xml[i], ONE_LINE_OPEN_CLOSE))
 			{
-				printf("One line open close tag: %s\n", lines[i].c_str());
+				printf("One line open close tag: %s\n", xml[i].c_str());
 
-				string currLine = lines[i];
+				string currLine = xml[i];
 				string closeName;
 
 				openTag = myUtil.getMatch(currLine, ONE_LINE_OPEN_CLOSE, 1);
@@ -297,8 +520,8 @@ bool Web::parseXML(string xml)
 			}
 			else
 			{
-				attributes = myUtil.split(lines[i], ATTRIBUTE);
-				name = myUtil.getMatch(lines[i], OPEN_TAG_NAME, 1);
+				attributes = myUtil.split(xml[i], ATTRIBUTE);
+				name = myUtil.getMatch(xml[i], OPEN_TAG_NAME, 1);
 				printf("Open Tag: %s\n", name.c_str());
 				tagFlow.push(name);
 				for(int i = 0; i < attributes.size(); i++)
@@ -332,9 +555,9 @@ bool Web::parseXML(string xml)
 				}
 			}
 		}
-		else if(!myUtil.match(lines[i], IGNORE_TAG) && !tagFlow.empty())
+		else if(!myUtil.match(xml[i], IGNORE_TAG) && !tagFlow.empty())
 		{
-			curr->setVal(lines[i]);
+			curr->setVal(xml[i]);
 		}
 	}
 
@@ -407,17 +630,6 @@ Node * Web::search(Node *currNode, string nodeName, string nodeParent)
 	}
 	else if(currNode->getName() == nodeParent)
 	{
-		/*vector<string> children = currNode->getChildren();
-
-		for(int i = 0; i < children.size(); i++)
-		{
-			if(children[i] == nodeName)
-			{
-				Node *found = currNode->getChild(children[i]);
-				return found;
-			}
-		}*/
-
 		Node *found = currNode->getChild(nodeName);
 		return found;
 	}
@@ -525,16 +737,82 @@ string Web::writeXML(Node *currNode, string prefix)
 	return xmlOut;
 }
 
-bool Web::writeXML(string xmlFileName)
+string Web::writeWordsXML()
 {
-	string xmlOut = writeXML(root, "");
-	ofstream xmlFile;
-	
-	xmlFile.open(xmlFileName.c_str(), ofstream::out);
+	wordsBAK = map<string, vector<Word *>>(words);
+	string xmlString = "<words>\n";
+	vector<string> tenses;
+	vector<Word *> meanings;
+	map<string, vector<Word *>>::iterator wIT;
+	string currPOS, concept, parentConcept;
 
-	xmlFile.write(xmlOut.c_str(), xmlOut.length());
+	for(wIT = words.begin(); wIT != words.end(); wIT++)
+	{
+		if((*wIT).second.size() > 0)
+		{
+			meanings = (*wIT).second;
+			for(int i = 0; i < meanings.size(); i++)
+			{
+				currPOS = meanings[i]->getPOS();
+				concept = meanings[i]->getConcept()->getName();
+				parentConcept = meanings[i]->getConcept()->getParent()->getName();
+				tenses = meanings[i]->getTenses();
+
+				xmlString += "\t<word>\n";
+				for(int j = 0; j < tenses.size(); j++)
+				{
+					xmlString += "\t\t<tense>" + tenses[j] + "</tense>\n";
+					int k = 0;
+					while(parentConcept != meanings[k]->getConcept()->getParent()->getName()
+						&& concept != meanings[k]->getConcept()->getName() && k < meanings.size())
+					{
+						k++;
+					}
+					if(k < meanings.size())
+					{
+						words[tenses[j]].erase(words[tenses[j]].begin() + k);
+					}
+				}
+
+				xmlString += "\t\t<concept parent=\"" + parentConcept + "\">" + concept + "</concept>\n";
+				xmlString += "\t\t<pos>" + currPOS + "</pos>\n";
+				xmlString += "\t</word>\n";
+			}
+		}
+	}
+
+	xmlString += "</words>\n";
+	words = map<string, vector<Word *>>(wordsBAK);
+
+	return xmlString;
+}
+
+bool Web::writeXML(string xmlFilePath)
+{
+	if(xmlFilePath[xmlFilePath.length() - 1] != '/')
+	{
+		xmlFilePath += "/";
+	}
 	
-	xmlFile.close();
+	ofstream conceptXMLFile, wordXMLFile;
+	
+	conceptXMLFile.open((xmlFilePath + "concepts.xml").c_str(), ofstream::out);
+	wordXMLFile.open((xmlFilePath + "words.xml").c_str(), ofstream::out);
+
+	if(conceptXMLFile.fail() || wordXMLFile.fail())
+	{
+		printf("conceptFile status: %d\nwordFile status: %d\n", (int) conceptXMLFile.fail(), (int) wordXMLFile.fail());
+		return false;
+	}
+
+	string conceptXMLOut = writeXML(root, "");
+	string wordXMLOut = writeWordsXML();
+
+	conceptXMLFile.write(conceptXMLOut.c_str(), conceptXMLOut.length());
+	wordXMLFile.write(wordXMLOut.c_str(), wordXMLOut.length());
+	
+	conceptXMLFile.close();
+	wordXMLFile.close();
 
 	return true;
 }
@@ -562,7 +840,7 @@ void Web::splitStr(string str, char delim, vector<string> &container)
 
 
 
-bool Web::writeGraph(string graphFileName, string graphDef)
+void Web::writeGraph(string graphFileName, string graphDef)
 {
 	ofstream graphFile;
 	
@@ -571,8 +849,6 @@ bool Web::writeGraph(string graphFileName, string graphDef)
 	graphFile.write(graphDef.c_str(), graphDef.length());
 	
 	graphFile.close();
-
-	return true;
 }
 
 
