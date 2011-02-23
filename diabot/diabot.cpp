@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <engine.h>
 #include "web.h"
+#include "matlab.h"
 
 
 using namespace std;
@@ -9,39 +10,12 @@ int main()
 {
 	bool result;
 	Engine *ep;
-	Web concepts;
-	concepts = Web();
+	Web concepts = Web();
+	Matlab mat = Matlab();
 	char matBuf[2048], matCommand[2048];
-	string thesisPath = "c:/Users/ffej/Documents/Thesis/";
+	string thesisPath = "C:/Users/ffej/Documents/Thesis/matlab/";
 	
 
-	/*
-	 * Start the MATLAB engine locally by executing the string
-	 * "matlab"
-	 *
-	 * To start the session on a remote host, use the name of
-	 * the host as the string rather than \0
-	 *
-	 * For more complicated cases, use any string with whitespace,
-	 * and that string will be executed literally to start MATLAB
-	 */
-	if (!(ep = engOpen(NULL))) {
-		printf("\nCan't start MATLAB engine\n");
-		return -1;
-	}
-	printf("engine open\n");
-
-	//create a buffer to store matlab output in
-	engOutputBuffer(ep, matBuf, 2048);
-	engEvalString(ep, "pwd");
-	printf(matBuf);
-	sprintf(matCommand, "img = imread('%smatlab/img/segOrig.jpg')", thesisPath.c_str());
-	printf(matCommand);
-	engEvalString(ep, matCommand);
-	printf(matBuf);
-	engEvalString(ep, "imshow(img);");
-	printf(matBuf);
-	
 	if(!concepts.parseXMLFile("C:/Users/ffej/Documents/Thesis/diabot/xml/concepts.xml"))
 	{
 		printf("concepts parse failed\n");
@@ -56,8 +30,12 @@ int main()
 	}
 	printf("word parse done\n");
 
-	concepts.genGraph();
+	mat.matExec("cd " + thesisPath);
+	mat.matExec("img = imread('img/segOrig.jpg');");
+	mat.matExec("[edges sig rgb_segment_mask] = findObjects(img, 6);");
+	
 
+	concepts.genGraph();
 	printf("graph done\n");
 
 	if(!concepts.writeXML("xmlOut"))

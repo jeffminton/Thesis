@@ -21,7 +21,7 @@
     <ClInclude Include="..\..\diabot\lib\util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="matlab.h">
+    <ClInclude Include="..\..\diabot\matlab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,7 +35,7 @@
     <ClCompile Include="..\..\diabot\lib\util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="matlab.cpp">
+    <ClCompile Include="..\..\diabot\matlab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
