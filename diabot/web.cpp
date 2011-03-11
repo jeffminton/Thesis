@@ -249,6 +249,27 @@ void Word::addTense(string tense)
 	tenses.push_back(tense);
 }
 
+void Word::addTense(vector<string> tensesIn)
+{
+	bool tenseExists = true;
+
+	for(int i = 0; i < tensesIn.size(); i++)
+	{
+		for(int j = 0; j < tenses.size(); j++)
+		{
+			if(tenses[j] == tensesIn[i])
+			{
+				tenseExists = false;
+			}
+		}
+		if(tenseExists == false)
+		{
+			tenses.push_back(tensesIn[i]);
+			tenseExists = true;
+		}
+	}
+}
+
 /**********************************************************************/
 /**
  * Class:	Web
@@ -434,6 +455,57 @@ bool Web::parseWords(vector<string> xml)
 	}
 	
 	return true;
+}
+
+
+void Web::addWord(vector<string> tenses, string concept, string parentConcept, string pos)
+{
+	vector<string> existingTenses;
+	vector<vector<Word *>> existingWordVectors;
+	vector<Word *> wordVector;
+	Node * currConcept;
+	Word * currWord;
+	bool conceptMatched = false;
+
+	currConcept = search(root, concept, parentConcept);
+	
+	for(int i = 0; i < tenses.size(); i++)
+	{
+		if(words[tenses[i]] != (vector<Word *>) NULL)
+		{
+			existingWordVectors.push_back(words[tenses[i]]);
+		}
+	}
+
+	if(!existingWordVectors.empty())
+	{
+		currWord = new Word(pos, currConcept);
+		for(int i = 0; i < tenses.size(); i++)
+		{
+			currWord->addTense(tenses[i]);
+		}
+		wordVector.push_back(currWord);
+		for(int i = 0; i < tenses.size(); i++)
+		{
+			words[tenses[i]] = wordVector;
+		}
+	}
+	else
+	{
+		for(int i = 0; i < existingWordVectors.size(), conceptMatched == false; i++)
+		{
+			wordVector = existingWordVectors.back();
+			existingWordVectors.pop_back();
+			for(int j = 0; j < wordVector.size(), conceptMatched == false; j++)
+			{
+				if(wordVector[j]->getConcept() == currConcept)
+				{
+					conceptMatched = true;
+
+				}
+			}
+		}
+	}
 }
 
 
@@ -977,4 +1049,10 @@ string Web::graphNodes(Node *currNode)
 
 		return graphString;
 	}
+}
+
+
+vector<Word *> Web::getWordList(string word)
+{
+	return words[word];
 }

@@ -22,18 +22,23 @@ sigImg = cell(1, size(segment_masks, 2));
 sig = cell(1, size(segment_masks, 2));
 
 %perform task on each segment mask returned
-for i = 1:size(segment_masks, 2)
+for i = 1:size(segment_masks, 2);
     %copy image to segImg for masking
     segImg = imgBak;
     %turn the segment_mask at i into a 3 dimensional matrix
     rgb_segment_mask = repmat(segment_masks{i}, [1, 1, 3]);
     %create signature img
-    sigImg{i} = imgBak(rgb_segment_mask ~= 0);
+    sigImg{i} = imgBak(rgb_segment_mask ~= 0)
     %create signature array
     nrows = size(sigImg{i}, 1);
     ncols = size(sigImg{i}, 2);
-    size(sigImg{i})
-    %sig{i} = reshape(sigImg{i}, nrows * ncols, 3);
+    %size(sigImg{i})
+    %sig{i} = reshape(sigImg{i}, nrows * ncols, 3)
+    sig{i} = zeros([nrows / 3, 3]);
+    sig{i}(:, 1) = sigImg{i}(1:3:end);
+    sig{i}(:, 2) = sigImg{i}(2:3:end);
+    sig{i}(:, 3) = sigImg{i}(3:3:end);
+    %imshow(sig{i}), figure;
     %set pixels in segImg to 0 where they are 0 in mask
     %segImg((rgb_segment_mask(:, :, 1) == 0) && (rgb_segment_mask(:, :, 2) == 0) && (rgb_segment_mask(:, :, 3) == 0)) = 0;
     segImg(rgb_segment_mask(:, :, :) == 0) = 0;
@@ -46,3 +51,6 @@ for i = 1:size(segment_masks, 2)
     %write mask to disk
     imwrite(segment_masks{i}, ['imgout\segMasks', num2str(i), '.jpg']);
 end
+
+sigImg;
+sig;
