@@ -1,0 +1,39 @@
+Algorithm - K-Means segmentation of data
+
+Algorithm kmeans:
+	input:	dat - the data that is to be segmented, must be in the 
+				form of a vector where each element contains the 
+				information for one discrete peice of data, 
+			k - the number of segments to separate the data into
+	
+	output:	segment_idx - a vector the same length as dat, used to
+				store the segment each peice of data belongs to
+			segment_means - an array of the mean values of the segments
+				in the data. 
+	
+	means - array of k values to act as mean segment values
+	intitialize means with k different values from dat
+	newmeans - symmetric array of means, used to store new means
+		calculated from segments to compare against old means
+	
+	for val in dat:
+		set corresponding index of val in segment_idx to index of 
+		closest value from means array
+	
+	for mean in means:
+		recalculate mean value for each segment using values in dat whos
+		coresponding index in segment_idx is equal to the index of mean
+		in means, store new value innewmeans array
+	
+	**process data until values in means do not change after an
+		iteration through the data**
+	while newmeans not = means:
+		means = newmeans - set means to values in newmeans
+		
+		for val in dat:
+			recalculate segments as above
+		
+		for mean in means:
+			recalculate mean value for each segment as above
+			
+	return segment_idx, segment_means
