@@ -334,6 +334,14 @@ class Word
 		vector<string> getTenses();
 
 		/**
+		Function:		mergeTenses
+		Description:	add tenses in a vector to the tenses vector in object
+						do not add repeats
+		Parameters:		vector<string> tensesin - the tenses to add
+		*/
+		void addTense(vector<string> tensesIn);
+
+		/**
 		Function:		addTense
 		Description:	add a word tense to the list of tenses
 		Parameters:		string tense - the tense to add
@@ -411,6 +419,24 @@ class Web
 		Return:			bool - true success false failure
 		*/
 		bool parseWords(vector<string> xml);
+
+		/**
+		Function:		addWord
+		Description:	add a word to the words map
+		Parameters:		vector<string> tenses - list of tenses for the word
+						string concept - represented concept
+						string parentConcept - concepts parent
+						string pos - the part of speach for the word
+		*/
+		void addWord(vector<string> tenses, string concept, string parentConcept, string pos);
+
+		/**
+		Function:		mergeTenses
+		Description:	merge two vectors of tenses into one that has no repeats
+		Parameters:		vector<string> tenses1 - first set of tenses, stores final merged set
+						vector<string> tenses2 - second set of tenses
+		*/
+		void mergeTenses(vector<string> &tenses1, vector<string> &tenses2);
 
 		/**
 		Function:		postLink
@@ -500,4 +526,12 @@ class Web
 		Return:			string - the string of DOT commands
 		*/
 		string graphEdges(Node *currNode);
+
+		/**
+		Function:		getWordList
+		Description:	return the vector of Word * that a word maps to
+		Parameters:		string word - the word to search for
+		Return:			vector<Word *> - the list of meainings
+		*/
+		vector<Word *> getWordList(string word);
 };
