@@ -36,8 +36,8 @@ function [ data_idxs centroids ] = kmeansK( data_vecs, k )
     max_vec_vals = max(data_vecs,[],1);
     
     % initialize the cluster centers
-    centroids = arrayfun(@(i) linspace(min_vec_vals(i), max_vec_vals(i), k)', 1:size(data_vecs,2), 'UniformOutput', false);
-    centroids = cell2mat(centroids);
+    centroids_vec = arrayfun(@(i) linspace(min_vec_vals(i), max_vec_vals(i), k)', 1:size(data_vecs,2), 'UniformOutput', false);
+    centroids = cell2mat(centroids_vec);
     prv_centroids = centroids + 1;
     
     % iterate until the cluster centers stop changing
@@ -48,7 +48,8 @@ function [ data_idxs centroids ] = kmeansK( data_vecs, k )
         % find the distance from the means
         dists = zeros(size(data_vecs,1),k);
         for k_idx = 1:k
-            temp = data_vecs - repmat(centroids(k_idx,:), [size(data_vecs,1) 1]);
+            temp_cent_mat = repmat(centroids(k_idx,:), [size(data_vecs,1) 1]);
+            temp = data_vecs - temp_cent_mat;
             dists(:,k_idx) = sum(temp.^2,2);
         end
         

@@ -1,4 +1,4 @@
-function [edges sig rgb_segment_mask] = findObjects(img, segments)
+function [edges sig sigImg rgb_segment_mask] = findObjects(img, segments)
 
 %copy input image
 imgBak = img;
@@ -28,20 +28,17 @@ for i = 1:size(segment_masks, 2);
     %turn the segment_mask at i into a 3 dimensional matrix
     rgb_segment_mask = repmat(segment_masks{i}, [1, 1, 3]);
     %create signature img
-    sigImg{i} = imgBak(rgb_segment_mask ~= 0)
+    sig{i} = imgBak(rgb_segment_mask ~= 0);
+    pixCount = size(sig{i}, 1) / 3;
     %create signature array
-    nrows = size(sigImg{i}, 1);
-    ncols = size(sigImg{i}, 2);
-    %size(sigImg{i})
-    %sig{i} = reshape(sigImg{i}, nrows * ncols, 3)
-    sig{i} = zeros([nrows / 3, 3]);
-    sig{i}(:, 1) = sigImg{i}(1:3:end);
-    sig{i}(:, 2) = sigImg{i}(2:3:end);
-    sig{i}(:, 3) = sigImg{i}(3:3:end);
-    %imshow(sig{i}), figure;
-    %set pixels in segImg to 0 where they are 0 in mask
-    %segImg((rgb_segment_mask(:, :, 1) == 0) && (rgb_segment_mask(:, :, 2) == 0) && (rgb_segment_mask(:, :, 3) == 0)) = 0;
-    segImg(rgb_segment_mask(:, :, :) == 0) = 0;
+    sigImg{i} = zeros(1, pixCount, 3);
+    start = 1;
+    sigImg{i}(1, :, 1) = sig{i}(start:pixCount);
+    start = start + pixCount;
+    sigImg{i}(1, :, 2) = sig{i}(start:pixCount * 2);
+    start = start + pixCount;
+    sigImg{i}(1, :, 3) = sig{i}(start:pixCount * 3);
+    sigImg{i} = uint8(sigImg{i});
     %write segmented color file to disk
     imwrite(segImg, ['imgout\segColor', num2str(i), '.jpg']);
     %perform edge detection on segment mask i
@@ -51,6 +48,3 @@ for i = 1:size(segment_masks, 2);
     %write mask to disk
     imwrite(segment_masks{i}, ['imgout\segMasks', num2str(i), '.jpg']);
 end
-
-sigImg;
-sig;
