@@ -1,7 +1,7 @@
 function [segment_masks imgGray] = segmentImage(img, segments)
 
 %declare a conversion format
-cform = makecform('srgb2lab');
+%cform = makecform('srgb2lab');
 
 %get grayscale image of input image
 imgGray = rgb2gray(img);
@@ -11,18 +11,24 @@ imgBW = im2bw(imgGray, .5);
 white = or(imgBW, ~imgBW);
 
 %apply conversion format
-imgLAB = applycform(img, cform);
+%imgLAB = applycform(img, cform);
 %create array of doubles from last 2 elems of formatted image
-ab = double(imgLAB(:,:,2:3));
+%ab = double(imgLAB(:,:,2:3));
 %get rows and columns in image
-nrows = size(ab, 1);
-ncols = size(ab, 2);
+nrows = size(img, 1);
+ncols = size(img, 2);
 %reshape image array to have same number of elements but in only 2 columns
 %returns a matrix same size as ab, each element represents a
 %pixels cluster number
-ab = reshape(ab, nrows * ncols, 2);
+%ab = reshape(ab, nrows * ncols, 2);
+imgR = img(:,:,1);
+imgG = img(:,:,2);
+imgB = img(:,:,3);
+[col row] = meshgrid(1:size(img,1), 1:size(img,2));
+data_vecs = [imgR(:) imgG(:) imgB(:) row(:) col(:)];
 %run kmeans clustering using ab and segments
-[cluster_idx cluster_centers] = kmeansK(ab, segments);
+%[cluster_idx cluster_centers] = kmeansK(ab, segments);
+[cluster_idx cluster_centers] = kmeansK(data_vecs, segments);
 %reshape cluster_idx to have orig rows and cols
 pixel_labels = reshape(cluster_idx, nrows, ncols);
 %make a cell conataining num of segments
@@ -42,9 +48,10 @@ for k = 1:segments
     %set all pixels not part of current cluster to 0
     mask(pixel_labels ~= k) = 0;
     %filter mask to reduce noise
-    filt = ones(7,7)/49;
-    maskFilt = imfilter(mask, filt);
-    segment_masks{k} = maskFilt;
+    %filt = ones(7,7)/49;
+    %maskFilt = imfilter(mask, filt);
+    %segment_masks{k} = maskFilt;
+    segment_masks{k} = mask;
 end
 
 end
