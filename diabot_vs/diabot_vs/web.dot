@@ -1,0 +1,37 @@
+digraph web{
+"concepts\n\nparent=" -> "action\n\nparent=concepts";
+"action\n\nparent=concepts" -> "movement\n\nparent=action";
+"movement\n\nparent=action" -> "travel\n\nparent=movement";
+"travel\n\nparent=movement" -> "travel reqgrp 0";
+"travel reqgrp 0" -> "travel reqgrp 0 req 0\n\nplace from descriptor" [color=red];
+"travel\n\nparent=movement" -> "travel reqgrp 1";
+"travel reqgrp 1" -> "travel reqgrp 1 req 0\n\ndistance from unit" [color=red];
+"travel reqgrp 1" -> "travel reqgrp 1 req 1\n\ndirection from descriptor" [color=red];
+"travel\n\nparent=movement" -> "travel reqgrp 2";
+"travel reqgrp 2" -> "travel reqgrp 2 req 0\n\ntime from unit" [color=red];
+"travel reqgrp 2" -> "travel reqgrp 2 req 1\n\ndirection from descriptor" [color=red];
+"concepts\n\nparent=" -> "value\n\nparent=concepts";
+"value\n\nparent=concepts" -> "number\n\nparent=value";
+"number\n\nparent=value" -> "number reqgrp 0";
+"number reqgrp 0" -> "number reqgrp 0 req 0\n\ndescriptor from concepts" [color=red];
+"value\n\nparent=concepts" -> "color\n\nparent=value";
+"color\n\nparent=value" -> "color reqgrp 0";
+"color reqgrp 0" -> "color reqgrp 0 req 0\n\ncolor from descriptor" [color=red];
+"concepts\n\nparent=" -> "descriptor\n\nparent=concepts";
+"descriptor\n\nparent=concepts" -> "place\n\nparent=descriptor";
+"place\n\nparent=descriptor" -> "place reqgrp 0";
+"place reqgrp 0" -> "place reqgrp 0 req 0\n\naction from concepts" [color=red];
+"descriptor\n\nparent=concepts" -> "direction\n\nparent=descriptor";
+"direction\n\nparent=descriptor" -> "direction reqgrp 0";
+"direction reqgrp 0" -> "direction reqgrp 0 req 0\n\naction from concepts" [color=red];
+"descriptor\n\nparent=concepts" -> "unit\n\nparent=descriptor";
+"unit\n\nparent=descriptor" -> "distance\n\nparent=unit";
+"distance\n\nparent=unit" -> "distance reqgrp 0";
+"distance reqgrp 0" -> "distance reqgrp 0 req 0\n\nvalue from concepts" [color=red];
+"unit\n\nparent=descriptor" -> "time\n\nparent=unit";
+"time\n\nparent=unit" -> "time reqgrp 0";
+"time reqgrp 0" -> "time reqgrp 0 req 0\n\nvalue from concepts" [color=red];
+"descriptor\n\nparent=concepts" -> "color\n\nparent=descriptor";
+"color\n\nparent=descriptor" -> "color reqgrp 0";
+"color reqgrp 0" -> "color reqgrp 0 req 0\n\ncolor from value" [color=red];
+}

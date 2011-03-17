@@ -1,0 +1,18 @@
+digraph web{
+node[fontsize=30];
+"concepts\n\nparent=" -> "action\n\nparent=concepts";
+"action\n\nparent=concepts" -> "movement\n\nparent=action";
+"movement\n\nparent=action" -> "travel\n\nparent=movement";
+"travel\n\nparent=movement" -> "travel reqgrp 0";
+"travel reqgrp 0" -> "travel reqgrp 0 req 0\n\nplace from descriptor" [color=red];
+"travel\n\nparent=movement" -> "travel reqgrp 1";
+"travel reqgrp 1" -> "travel reqgrp 1 req 0\n\ndistance from unit" [color=red];
+"travel reqgrp 1" -> "travel reqgrp 1 req 1\n\ndirection from descriptor" [color=red];
+"concepts\n\nparent=" -> "descriptor\n\nparent=concepts";
+"descriptor\n\nparent=concepts" -> "place\n\nparent=descriptor";
+"place\n\nparent=descriptor" -> "place reqgrp 0";
+"place reqgrp 0" -> "place reqgrp 0 req 0\n\naction from concepts" [color=red];
+"descriptor\n\nparent=concepts" -> "color\n\nparent=descriptor";
+"color\n\nparent=descriptor" -> "color reqgrp 0";
+"color reqgrp 0" -> "color reqgrp 0 req 0\n\ncolor from value" [color=red];
+}

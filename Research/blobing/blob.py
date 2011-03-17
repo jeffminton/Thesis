@@ -26,17 +26,18 @@ from unionfind import *
 
 class blobit():
 	def __init__(self):
-		self.width = 320
-		self.height = 240
-		self.imgCnt = 0
-		#img = cv.LoadImage("0.bmp")
+		0
+		#~ self.width = 320
+		#~ self.height = 240
+		#~ self.imgCnt = 0
+		#~ #img = cv.LoadImage("0.bmp")
 		#~ cv.NamedWindow("orig")
 		#~ cv.NamedWindow("img")
-		cv.NamedWindow("blobimg")
-		self.cap = cv.CaptureFromCAM(0)
+		#~ cv.NamedWindow("blobimg")
+		#~ self.cap = cv.CaptureFromCAM(0)
 		#~ print "setting props"
-		cv.SetCaptureProperty(self.cap, cv.CV_CAP_PROP_FRAME_WIDTH, self.width)
-		cv.SetCaptureProperty(self.cap, cv.CV_CAP_PROP_FRAME_HEIGHT, self.height)
+		#~ cv.SetCaptureProperty(self.cap, cv.CV_CAP_PROP_FRAME_WIDTH, self.width)
+		#~ cv.SetCaptureProperty(self.cap, cv.CV_CAP_PROP_FRAME_HEIGHT, self.height)
 
 
 	def whereObject(self):
@@ -170,8 +171,8 @@ class blobit():
 		
 		'''	Pass One	'''
 		print "Pass One"
-		for y in range(0, img.height, 2):
-			for x in range(0, img.width, 2):
+		for y in range(img.height):
+			for x in range(img.width):
 		#~ for y in range(img.height):
 			#~ for x in range(img.width):
 				matchWest = False
@@ -206,8 +207,8 @@ class blobit():
 					
 		'''	Pass Two   '''
 		print "Pass Two"
-		for y in range(0, img.height, 2):
-			for x in range(0, img.width, 2):
+		for y in range(img.height):
+			for x in range(img.width):
 		#~ for y in range(img.height):
 			#~ for x in range(img.width):
 				pixCheck = [y, x]
@@ -220,7 +221,7 @@ class blobit():
 				region2pix[parReg].append(pixCheck)
 						
 		print "coloring regions"
-		blobImg = cv.CreateImage((self.width, self.height), cv.IPL_DEPTH_8U, 3)
+		blobImg = cv.CreateImage((img.width, img.height), cv.IPL_DEPTH_8U, 3)
 		for key in region2pix.keys():
 			avgColor = self.getAvgColor(region2pix[key], img)
 			region2color[key] = avgColor
