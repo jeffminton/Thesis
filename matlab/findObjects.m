@@ -25,6 +25,7 @@ sig = cell(1, size(segment_masks, 2));
 for i = 1:size(segment_masks, 2);
     %copy image to segImg for masking
     segImg = imgBak;
+    segImg(segment_masks{i} == 0) = 0;
     %turn the segment_mask at i into a 3 dimensional matrix
     rgb_segment_mask = repmat(segment_masks{i}, [1, 1, 3]);
     %create signature img
@@ -39,6 +40,8 @@ for i = 1:size(segment_masks, 2);
     start = start + pixCount;
     sigImg{i}(1, :, 3) = sig{i}(start:pixCount * 3);
     sigImg{i} = uint8(sigImg{i});
+    
+    segImg(rgb_segment_mask(:, :, :) == 0) = 0;
     %write segmented color file to disk
     imwrite(segImg, ['imgout\segColor', num2str(i), '.jpg']);
     %perform edge detection on segment mask i
