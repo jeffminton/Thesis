@@ -1,24 +1,25 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#	   untitled.py
-#	   
-#	   Copyright 2010 Jeffrey Minton <ffej@blinking-book>
-#	   
-#	   This program is free software; you can redistribute it and/or modify
-#	   it under the terms of the GNU General Public License as published by
-#	   the Free Software Foundation; either version 2 of the License, or
-#	   (at your option) any later version.
-#	   
-#	   This program is distributed in the hope that it will be useful,
-#	   but WITHOUT ANY WARRANTY; without even the implied warranty of
-#	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#	   GNU General Public License for more details.
-#	   
-#	   You should have received a copy of the GNU General Public License
-#	   along with this program; if not, write to the Free Software
-#	   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-#	   MA 02110-1301, USA.
+#       untitled.py
+#       
+#       Copyright 2011 Jeffrey Minton <ffej@blinking-book>
+#       
+#       This program is free software; you can redistribute it and/or modify
+#       it under the terms of the GNU General Public License as published by
+#       the Free Software Foundation; either version 2 of the License, or
+#       (at your option) any later version.
+#       
+#       This program is distributed in the hope that it will be useful,
+#       but WITHOUT ANY WARRANTY; without even the implied warranty of
+#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#       GNU General Public License for more details.
+#       
+#       You should have received a copy of the GNU General Public License
+#       along with this program; if not, write to the Free Software
+#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#       MA 02110-1301, USA.
+
 
 img5x5 = [[[120, 111, 82],[118, 109, 80],[117, 108, 79],[50, 70, 79],[51, 71, 81]],
 [[121, 112, 83],[120, 111, 82],[51, 70, 80],[50, 72, 81],[49, 69, 82]],
@@ -195,7 +196,7 @@ class blobit():
 		found = False
 		matchWest = False
 		matchNorth = False
-		mask = [][]
+		mask = []
 		
 		'''	Pass One	'''
 		print "Pass One"
@@ -236,8 +237,11 @@ class blobit():
 		'''	MASK   '''
 		print "MASK"
 		for y in range(img.height):
+			mask.append([])
 			for x in range(img.width):
-				mask[x][y] = pix2region[str(pixCheck)]
+				pixCheck = [y, x]
+				mask[y].append(pix2region[str(pixCheck)])
+			
 				
 		print "First Pass: ", mask
 					
@@ -255,6 +259,18 @@ class blobit():
 				if(not region2pix.has_key(parReg)):
 					region2pix[parReg] = []
 				region2pix[parReg].append(pixCheck)
+				
+		mask = []
+				
+		'''	MASK   '''
+		print "MASK"
+		for y in range(img.height):
+			mask.append([])
+			for x in range(img.width):
+				pixCheck = [y, x]
+				mask[y].append(pix2region[str(pixCheck)])
+				
+		print "Second Pass: ", mask
 						
 		print "coloring regions"
 		blobImg = cv.CreateImage((img.width, img.height), cv.IPL_DEPTH_8U, 3)
@@ -323,3 +339,17 @@ class blobit():
 				return True
 		return False
 		
+
+def main():
+	
+	myBlob = blobit()
+	
+	img = myBlob.gen5x5()
+	
+	blobImg, region2color, region2pix = myBlob.findBlob(img, 15)
+	
+	return 0
+
+if __name__ == '__main__':
+	main()
+
