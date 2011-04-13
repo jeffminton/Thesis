@@ -1,0 +1,19 @@
+<concepts id="concepts">
+	<action id="action">
+		<movement id="movement">
+			<travel id="travel">
+				<reqgrp id="reqgrp">
+					<req parent="descriptor">place</req>
+				</reqgrp>
+				<reqgrp id="reqgrp">
+					<req parent="unit">distance</req>
+					<req parent="descriptor">direction</req>
+				</reqgrp>
+				<reqgrp id="reqgrp">
+					<req parent="unit">time</req>
+					<req parent="descriptor">direction</req>
+				</reqgrp>
+			</travel>
+		</movement>
+	</action>
+</concepts>
