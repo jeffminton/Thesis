@@ -953,9 +953,10 @@ string Web::graphEdges(Node *currNode)
 	if(currNode->getNumReqGrp() > 0)
 	{
 		//nodeName from parentName
-		sprintf(strBuild, "\"%s\\n\\nparent=%s\"", currNode->getName().c_str(),
+		sprintf(strBuild, "\"\\n%s\\n\"", currNode->getName().c_str(),
 			currNode->getParent()->getName().c_str());
 		currString = strBuild;
+		graphString += currString + " [color=blue];\n";
 		
 		for(int i = 0; i < currNode->getNumReqGrp(); i++)
 		{
@@ -969,14 +970,19 @@ string Web::graphEdges(Node *currNode)
 				currNode->getName().c_str(), i);
 			reqString = strBuild;
 
-			graphString += currString + " -> " + reqString + ";\n";
+			graphString += reqString + " [color=red];\n";
+
+			graphString += currString + " -> " + reqString + " [color=blue];\n";
 
 			for(int j = 0; j < reqConcepts.size(); j++)
 			{
-				sprintf(strBuild, "%s -> \"%s reqgrp %d req %d\\n\\n%s from %s\" [color=red];\n",
-					reqString.c_str(), currNode->getName().c_str(), i, j, reqConcepts[j].c_str(),
+				sprintf(strBuild, "\"%s reqgrp %d req %d\\n\\n%s from %s\"",
+					currNode->getName().c_str(), i, j, reqConcepts[j].c_str(),
 					reqParents[j].c_str());
-				graphString += strBuild;
+
+				graphString += string(strBuild) + " [color=green];\n";
+
+				graphString += reqString + " -> " + strBuild + " [color=red];\n";
 			}
 		}
 
@@ -987,14 +993,14 @@ string Web::graphEdges(Node *currNode)
 		vector<string> children = currNode->getChildren();
 
 		//nodeName from parentName
-		sprintf(strBuild, "\"%s\\n\\nparent=%s\"", currNode->getName().c_str(),
+		sprintf(strBuild, "\"\\n%s\\n\"", currNode->getName().c_str(),
 			(currNode != root ? currNode->getParent()->getName() : "").c_str());
 		currString = strBuild;
 
 		for(int i = 0; i < children.size(); i++)
 		{
 			//"nodeName from parentName" -> "nodeName from parentName;"
-			sprintf(strBuild, "%s -> \"%s\\n\\nparent=%s\";\n",
+			sprintf(strBuild, "%s -> \"\\n%s\\n\";\n",
 				currString.c_str(), currNode->getChild(children[i])->getName().c_str(),
 				currNode->getName().c_str());
 			graphString += strBuild;

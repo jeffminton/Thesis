@@ -33,6 +33,8 @@ vector<vector<Word *>> parseSentence(string sentence, Web &concepts)
 		}
 		meaningList.push_back(currMeaning);
 	}
+
+	return (vector<vector<Word *>>) NULL;
 }
 
 

@@ -1,10 +1,10 @@
-﻿Build started 2/23/2011 2:21:48 PM.
+﻿Build started 4/7/2011 9:47:29 PM.
      1>Project "C:\Users\ffej\Documents\Thesis\diabot_vs\diabot_vs\diabot_vs.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\diabot_vs.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Program Files\MATLAB\R2010a Student\extern\include" /I"C:\Program Files\Graphviz2.26.3\include\graphviz" /ZI /nologo /W1 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\diabot\diabot.cpp
-         diabot.cpp
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Program Files\MATLAB\R2010a Student\extern\include" /I"C:\Program Files\Graphviz2.26.3\include\graphviz" /ZI /nologo /W1 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\diabot\web.cpp
+         web.cpp
        ManifestResourceCompile:
          All outputs are up-to-date.
        Link:
@@ -26,4 +26,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:03.24
+Time Elapsed 00:00:03.43
