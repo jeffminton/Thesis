@@ -1,0 +1,22 @@
+digraph web{
+"\nconcepts\n" -> "\naction\n";
+"\naction\n" -> "\nmovement\n";
+"\nmovement\n" -> "\ntravel\n";
+"\ntravel\n" [color=blue];
+"travel reqgrp 0" [color=red];
+"\ntravel\n" -> "travel reqgrp 0" [color=blue];
+"travel reqgrp 0 req 0\n\nplace from descriptor" [color=green];
+"travel reqgrp 0" -> "travel reqgrp 0 req 0\n\nplace from descriptor" [color=red];
+"travel reqgrp 1" [color=red];
+"\ntravel\n" -> "travel reqgrp 1" [color=blue];
+"travel reqgrp 1 req 0\n\ndistance from unit" [color=green];
+"travel reqgrp 1" -> "travel reqgrp 1 req 0\n\ndistance from unit" [color=red];
+"travel reqgrp 1 req 1\n\ndirection from descriptor" [color=green];
+"travel reqgrp 1" -> "travel reqgrp 1 req 1\n\ndirection from descriptor" [color=red];
+"travel reqgrp 2" [color=red];
+"\ntravel\n" -> "travel reqgrp 2" [color=blue];
+"travel reqgrp 2 req 0\n\ntime from unit" [color=green];
+"travel reqgrp 2" -> "travel reqgrp 2 req 0\n\ntime from unit" [color=red];
+"travel reqgrp 2 req 1\n\ndirection from descriptor" [color=green];
+"travel reqgrp 2" -> "travel reqgrp 2 req 1\n\ndirection from descriptor" [color=red];
+}
