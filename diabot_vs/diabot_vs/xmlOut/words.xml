@@ -1,5 +1,18 @@
 <words>
 	<word>
+		<tense>na</tense>
+		<tense>NA</tense>
+		<tense>to</tense>
+		<tense>the</tense>
+		<concept parent="concepts">na</concept>
+		<pos>na</pos>
+	</word>
+	<word>
+		<tense>ball</tense>
+		<concept parent="concepts">object</concept>
+		<pos>noun</pos>
+	</word>
+	<word>
 		<tense>centimeters</tense>
 		<tense>cm</tense>
 		<concept parent="unit">distance</concept>
@@ -54,6 +67,11 @@
 		<tense>number</tense>
 		<concept parent="value">number</concept>
 		<pos>adjective</pos>
+	</word>
+	<word>
+		<tense>red</tense>
+		<concept parent="descriptor">color</concept>
+		<pos>nount</pos>
 	</word>
 	<word>
 		<tense>reverse</tense>

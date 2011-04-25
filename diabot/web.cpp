@@ -203,6 +203,16 @@ vector<string> Node::getChildren()
 	return childNames;
 }
 
+vector<Node *> Node::getReqPtr()
+{
+	return reqPtr;
+}
+
+Node * Node::getReqPtr(int idx)
+{
+	return reqPtr[idx];
+}
+
 
 
 
@@ -270,6 +280,11 @@ void Word::addTense(vector<string> tensesIn)
 	}
 }
 
+void Word::setPos(string posIn)
+{
+	pos = posIn;
+}
+
 /**********************************************************************/
 /**
  * Class:	Web
@@ -280,6 +295,7 @@ Web::Web()
 	root = NULL;
 	curr = NULL;
 	myUtil = Util();
+	outFile = fopen("out.log", "w");
 }
 
 Web::Web(Web &w)
@@ -288,6 +304,7 @@ Web::Web(Web &w)
 	curr = w.curr;
 	words = w.words;
 	myUtil = w.myUtil;
+	outFile = fopen("out.log", "w");
 }
 
 Web::~Web()
@@ -319,7 +336,7 @@ bool Web::parseXML(string xml)
 	}
 	else
 	{
-		printf("Invalid root name in xml file\n");
+		fprintf(outFile, "Invalid root name in xml file\n");
 		return false;
 	}
 }
@@ -333,7 +350,7 @@ bool Web::parseWords(vector<string> xml)
 	//attributes - contains attributes for a tag
 	vector<string> attributes;
 	//vector of Word objects that a word points to
-	vector<Word *> wordArray;
+	vector<Word *> currentWord;
 	//name - tag name
 	//openTag - open tag in a one line tag
 	//closeTag - close tag in a one line tag
@@ -353,12 +370,13 @@ bool Web::parseWords(vector<string> xml)
 		
 		if(myUtil.match(xml[i], TAG) && !myUtil.match(xml[i], IGNORE_TAG))
 		{
+			//closeing tag
 			if(myUtil.match(xml[i], CLOSE_TAG))
 			{
 				name = myUtil.getMatch(xml[i], CLOSE_TAG_NAME, 1);
 				if(tagFlow.top() != name)
 				{
-					printf("Invalid closing tag\n");
+					fprintf(outFile, "Invalid closing tag\n");
 					return false;
 				}
 
@@ -370,9 +388,9 @@ bool Web::parseWords(vector<string> xml)
 					{
 						currWord = tenses.top();
 						tempWord->addTense(currWord);
-						wordArray = words[currWord];
-						wordArray.push_back(tempWord);
-						words[currWord] = wordArray;
+						currentWord = words[currWord];
+						currentWord.push_back(tempWord);
+						words[currWord] = currentWord;
 						tenses.pop();
 					}
 
@@ -380,16 +398,16 @@ bool Web::parseWords(vector<string> xml)
 					nextPOS = "";
 				}
 				tagFlow.pop();
-				printf("Close Tag: %s\n", name.c_str());
+				fprintf(outFile, "Close Tag: %s\n", name.c_str());
 				//curr = curr->getParent();
 			}
 			else if(myUtil.match(xml[i], ONE_LINE_TAG))
 			{
-				printf("One Line Tag: %s\n", xml[i].c_str());
+				fprintf(outFile, "One Line Tag: %s\n", xml[i].c_str());
 			}
 			else if(myUtil.match(xml[i], ONE_LINE_OPEN_CLOSE))
 			{
-				printf("One line open close tag: %s\n", xml[i].c_str());
+				fprintf(outFile, "One line open close tag: %s\n", xml[i].c_str());
 
 				string currLine = xml[i];
 				string closeName;
@@ -403,7 +421,7 @@ bool Web::parseWords(vector<string> xml)
 
 				if(name != closeName)
 				{
-					printf("invalid close tag\n");
+					fprintf(outFile, "invalid close tag\n");
 					return false;
 				}
 
@@ -423,14 +441,14 @@ bool Web::parseWords(vector<string> xml)
 					attrVal = myUtil.getMatch(attributes[0], ATTR_SPLIT, 2);
 					if(attrKey != "parent")
 					{
-						printf("invalid concept tag, no parent described\n");
+						fprintf(outFile, "invalid concept tag, no parent described\n");
 						return false;
 					}
 					nextConcept = search(root, value, attrVal);
 				}
 				else
 				{
-					printf("invalid tag in word group\n");
+					fprintf(outFile, "invalid tag in word group\n");
 					return false;
 				}
 			}
@@ -438,11 +456,11 @@ bool Web::parseWords(vector<string> xml)
 			{
 				attributes = myUtil.split(xml[i], ATTRIBUTE);
 				name = myUtil.getMatch(xml[i], OPEN_TAG_NAME, 1);
-				printf("Open Tag: %s\n", name.c_str());
+				fprintf(outFile, "Open Tag: %s\n", name.c_str());
 				tagFlow.push(name);
 				for(int i = 0; i < attributes.size(); i++)
 				{
-					printf("Attr %d: %s\n", i, attributes[i].c_str());
+					fprintf(outFile, "Attr %d: %s\n", i, attributes[i].c_str());
 				}
 			}
 		}
@@ -450,63 +468,13 @@ bool Web::parseWords(vector<string> xml)
 
 	if(!linkReqs(root))
 	{
-		printf("Requirment linking failed\n");
+		fprintf(outFile, "Requirment linking failed\n");
 		return false;
 	}
 	
 	return true;
 }
 
-
-void Web::addWord(vector<string> tenses, string concept, string parentConcept, string pos)
-{
-	vector<string> existingTenses;
-	vector<vector<Word *>> existingWordVectors;
-	vector<Word *> wordVector;
-	Node * currConcept;
-	Word * currWord;
-	bool conceptMatched = false;
-
-	currConcept = search(root, concept, parentConcept);
-	
-	for(int i = 0; i < tenses.size(); i++)
-	{
-		if(words[tenses[i]] != (vector<Word *>) NULL)
-		{
-			existingWordVectors.push_back(words[tenses[i]]);
-		}
-	}
-
-	if(!existingWordVectors.empty())
-	{
-		currWord = new Word(pos, currConcept);
-		for(int i = 0; i < tenses.size(); i++)
-		{
-			currWord->addTense(tenses[i]);
-		}
-		wordVector.push_back(currWord);
-		for(int i = 0; i < tenses.size(); i++)
-		{
-			words[tenses[i]] = wordVector;
-		}
-	}
-	else
-	{
-		for(int i = 0; i < existingWordVectors.size(), conceptMatched == false; i++)
-		{
-			wordVector = existingWordVectors.back();
-			existingWordVectors.pop_back();
-			for(int j = 0; j < wordVector.size(), conceptMatched == false; j++)
-			{
-				if(wordVector[j]->getConcept() == currConcept)
-				{
-					conceptMatched = true;
-
-				}
-			}
-		}
-	}
-}
 
 
 bool Web::parseConcepts(vector<string> xml)
@@ -526,28 +494,31 @@ bool Web::parseConcepts(vector<string> xml)
 	
 	for(int i = 0; i < (int) xml.size(); i++)
 	{
-		
+		//the line has an xml tag and it is not a tag that should be ignored
 		if(myUtil.match(xml[i], TAG) && !myUtil.match(xml[i], IGNORE_TAG))
 		{
+			//closing tag
 			if(myUtil.match(xml[i], CLOSE_TAG))
 			{
 				name = myUtil.getMatch(xml[i], CLOSE_TAG_NAME, 1);
 				if(tagFlow.top() != name)
 				{
-					printf("Invalid closing tag\n");
+					fprintf(outFile, "Invalid closing tag\n");
 					return false;
 				}
 				tagFlow.pop();
-				printf("Close Tag: %s\n", name.c_str());
+				fprintf(outFile, "Close Tag: %s\n", name.c_str());
 				curr = curr->getParent();
 			}
+			//oneline tage, there is not closing tag, the tag closes itself
 			else if(myUtil.match(xml[i], ONE_LINE_TAG))
 			{
-				printf("One Line Tag: %s\n", xml[i].c_str());
+				fprintf(outFile, "One Line Tag: %s\n", xml[i].c_str());
 			}
+			//open and close tag all on one line
 			else if(myUtil.match(xml[i], ONE_LINE_OPEN_CLOSE))
 			{
-				printf("One line open close tag: %s\n", xml[i].c_str());
+				fprintf(outFile, "One line open close tag: %s\n", xml[i].c_str());
 
 				string currLine = xml[i];
 				string closeName;
@@ -561,7 +532,7 @@ bool Web::parseConcepts(vector<string> xml)
 
 				if(name != closeName)
 				{
-					printf("invalid close tag\n");
+					fprintf(outFile, "invalid close tag\n");
 					return false;
 				}
 
@@ -571,7 +542,7 @@ bool Web::parseConcepts(vector<string> xml)
 					attrVal = myUtil.getMatch(attributes[0], ATTR_SPLIT, 2);
 					if(attrKey != "parent")
 					{
-						printf("Invalid attribute in 'req' tag\n");
+						fprintf(outFile, "Invalid attribute in 'req' tag\n");
 						return false;
 					}
 					curr->addReq(attrVal, value);
@@ -590,15 +561,16 @@ bool Web::parseConcepts(vector<string> xml)
 					curr = curr->getParent();
 				}
 			}
+			//must be an open tag
 			else
 			{
 				attributes = myUtil.split(xml[i], ATTRIBUTE);
 				name = myUtil.getMatch(xml[i], OPEN_TAG_NAME, 1);
-				printf("Open Tag: %s\n", name.c_str());
+				fprintf(outFile, "Open Tag: %s\n", name.c_str());
 				tagFlow.push(name);
 				for(int i = 0; i < attributes.size(); i++)
 				{
-					printf("Attr %d: %s\n", i, attributes[i].c_str());
+					fprintf(outFile, "Attr %d: %s\n", i, attributes[i].c_str());
 				}
 
 				if(root == NULL)
@@ -627,6 +599,7 @@ bool Web::parseConcepts(vector<string> xml)
 				}
 			}
 		}
+		//the tag should not be ignored and there is an open tag that has not been closed
 		else if(!myUtil.match(xml[i], IGNORE_TAG) && !tagFlow.empty())
 		{
 			curr->setVal(xml[i]);
@@ -635,7 +608,7 @@ bool Web::parseConcepts(vector<string> xml)
 
 	if(!linkReqs(root))
 	{
-		printf("Requirment linking failed\n");
+		fprintf(outFile, "Requirment linking failed\n");
 		return false;
 	}
 	
@@ -660,11 +633,11 @@ bool Web::linkReqs(Node *currNode)
 			{
 				currNode->setReqPtr(i, foundPtr);
 				result = true;
-				printf("Found link for %s to %s child of %s\n", currNode->getName().c_str(), reqConcepts[i].c_str(), reqParents[i].c_str());
+				fprintf(outFile, "Found link for %s to %s child of %s\n", currNode->getName().c_str(), reqConcepts[i].c_str(), reqParents[i].c_str());
 			}
 			else
 			{
-				printf("couldn't find required node to link\n");
+				fprintf(outFile, "couldn't find required node to link\n");
 			}
 		}
 
@@ -691,6 +664,11 @@ bool Web::linkReqs(Node *currNode)
 	}
 
 	return result;
+}
+
+bool Web::conceptExists(string nodeName, string nodeParent)
+{
+	return (search(root, nodeName, nodeParent) != (Node *) 0);
 }
 
 Node * Web::search(Node *currNode, string nodeName, string nodeParent)
@@ -747,7 +725,7 @@ bool Web::parseXMLFile(string xmlFileName)
 
 	if(!xmlFile.eof())
 	{
-		printf("reading stopped before end of file\n");
+		fprintf(outFile, "reading stopped before end of file\n");
 		return false;
 	}
 
@@ -873,7 +851,7 @@ bool Web::writeXML(string xmlFilePath)
 
 	if(conceptXMLFile.fail() || wordXMLFile.fail())
 	{
-		printf("conceptFile status: %d\nwordFile status: %d\n", (int) conceptXMLFile.fail(), (int) wordXMLFile.fail());
+		fprintf(outFile, "conceptFile status: %d\nwordFile status: %d\n", (int) conceptXMLFile.fail(), (int) wordXMLFile.fail());
 		return false;
 	}
 
@@ -897,7 +875,7 @@ void Web::splitStr(string str, char delim, vector<string> &container)
 	
 	while( (end = str.find_first_of(delim)) != string::npos)
 	{
-		//printf("split loop %d times\n", times);
+		//fprintf(outFile, "split loop %d times\n", times);
 		times++;
 		line = string(str.begin(), str.begin() + int(end) + 1);
 		myUtil.strip(line);
@@ -1058,7 +1036,164 @@ string Web::graphNodes(Node *currNode)
 }
 
 
-vector<Word *> Web::getWordList(string word)
+vector<Word *> Web::getWordList(string wordIn)
 {
-	return words[word];
+	return words[wordIn];
+}
+
+
+bool Web::addWordNA(string wordIn)
+{
+	vector<Word *> naWord;
+
+	naWord = words["NA"];
+	naWord[0]->addTense(wordIn);
+	words[wordIn] = naWord;
+	return true;
+}
+
+
+vector<Word *> Web::missingWords(vector<vector<Word *>> meanings)
+{
+	
+	vector<Node *> conceptsNeeded, conceptsPresent, tempConceptsNeeded, currReqPtr;
+	vector<int> meaningsMatchedIdx = vector<int>(meanings.size(), -1);
+	vector<Word *> wordsNeeded;
+	Node *currConcept, *currReqGroup;
+	bool reqMatched;
+	Word *tempWord;
+	Node *tempConcept;
+
+	//for all vectors in meanings vector
+	for(int i = 0; i < meanings.size(); i++)
+	{
+		if(meanings[i] != (vector<Word *>) NULL)
+		{
+			//for all items in each vector
+			for(int j = 0; j < meanings[i].size(); j++)
+			{
+				if(meanings[i][j]->getConcept()->getName() != "na")
+				{
+					//get the concept that the current Word * item points to
+					conceptsPresent.push_back(meanings[i][j]->getConcept());
+				}
+			}
+		}
+	}
+
+	//for each list of meanings in the meaning vecotr
+	for(int i = 0; i < meanings.size(); i++)
+	{
+		//requirments not matched for anything the the vector
+		//at the current index
+		reqMatched = false;
+		//make sure index is not null
+		if(meanings[i] != (vector<Word *>) NULL)
+		{
+			//for each word object in the vector at the current index
+			for(int j = 0; j < meanings[i].size(); j++)
+			{
+				//make sure word is importans
+				if(meanings[i][j]->getConcept()->getName() != "na")
+				{
+					//get pointer to concept in current word object
+					currConcept = meanings[i][j]->getConcept();
+					//for each requirment group that the current concept has
+					for(int k = 0; k < currConcept->getNumReqGrp(); k++)
+					{
+						//if all the reqs in the current requirment group are satisfied in the
+						//set of concepts known to be in the sentence, set req matched to true and break
+						if(haveReqs(currConcept->getReqGrp(k)->getReqPtr(), conceptsPresent))
+						{
+							reqMatched = true;
+							break;
+						}
+					}
+					//if reqmatched is true set the current index in the matchedidx array to the
+					//index of the word object from the vector that had satisfied requirments
+					if(reqMatched == true)
+					{
+						meaningsMatchedIdx[i] = j;
+						break;
+					}
+				}
+				else
+				{
+					meaningsMatchedIdx[i] = -2;
+					break;
+				}
+			}
+		}
+		else
+		{
+			meaningsMatchedIdx[i] = -2;
+		}
+
+	}
+
+	for(int i = 0; i < meaningsMatchedIdx.size(); i++)
+	{
+		if(meaningsMatchedIdx[i] == -1)
+		{
+			for(int j = 0; j < meanings[i].size(); j++)
+			{
+				currConcept = meanings[i][j]->getConcept();
+				for(int k = 0; k < currConcept->getNumReqGrp(); k++)
+				{
+					for(int m = 0; m < currConcept->getReqGrp(k)->getReqPtr().size(); m++)
+					{
+						
+						wordsNeeded.push_back(new Word("", currConcept->getReqGrp(k)->getReqPtr(m)));
+					}
+				}
+			}
+		}
+	}
+
+	return wordsNeeded;
+}
+
+
+bool Web::haveReqs(vector<Node *> reqPtrs, vector<Node *> conceptsPresent)
+{
+	vector<bool> haveReqs = vector<bool>(reqPtrs.size(), false);
+
+	for(int i = 0; i < reqPtrs.size(); i++)
+	{
+		for(int j = 0; j < conceptsPresent.size(); j++)
+		{
+			if(reqPtrs[i] == conceptsPresent[j])
+			{
+				haveReqs[i] = true;
+				break;
+			}
+		}
+	}
+
+	for(int i = 0; i < haveReqs.size(); i++)
+	{
+		if(haveReqs[i] == false)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+
+bool Web::addWord(string pos, string wordIn, Word *meaning)
+{
+	vector<Word *> currWordSet;
+	//add the word passed in to the set of tenses
+	meaning->addTense(wordIn);
+	//set the word objects part of speech
+	meaning->setPos(pos);
+	//get anything the word currently maps to
+	currWordSet = words[wordIn];
+	//add new word to set of words
+	currWordSet.push_back(meaning);
+	//assign word set to word in map
+	words[wordIn] = currWordSet;
+	return true;
 }

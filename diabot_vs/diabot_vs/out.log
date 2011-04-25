@@ -1,0 +1,138 @@
+Open Tag: concepts
+Attr 0: id="concepts"
+Open Tag: na
+Attr 0: id="na"
+Close Tag: na
+Open Tag: object
+Attr 0: id="object"
+Open Tag: reqgrp
+Attr 0: id="reqgrp"
+One line open close tag: <req parent="descriptor">color</req>
+One line open close tag: <req parent="value">color</req>
+Close Tag: reqgrp
+Close Tag: object
+Open Tag: action
+Attr 0: id="action"
+Open Tag: movement
+Attr 0: id="movement"
+Open Tag: travel
+Attr 0: id="travel"
+Open Tag: reqgrp
+Attr 0: id="reqgrp"
+One line open close tag: <req parent="descriptor">place</req>
+Close Tag: reqgrp
+Open Tag: reqgrp
+Attr 0: id="reqgrp"
+One line open close tag: <req parent="unit">distance</req>
+One line open close tag: <req parent="descriptor">direction</req>
+Close Tag: reqgrp
+Open Tag: reqgrp
+Attr 0: id="reqgrp"
+One line open close tag: <req parent="unit">time</req>
+One line open close tag: <req parent="descriptor">direction</req>
+Close Tag: reqgrp
+Open Tag: reqgrp
+Attr 0: id="reqgrp"
+One line open close tag: <req parent="concepts">object</req>
+Close Tag: reqgrp
+Close Tag: travel
+Close Tag: movement
+Close Tag: action
+Open Tag: value
+Attr 0: id="value"
+Open Tag: number
+Attr 0: id="number"
+Open Tag: reqgrp
+Attr 0: id="reqgrp"
+One line open close tag: <req parent="concepts">descriptor</req>
+Close Tag: reqgrp
+Close Tag: number
+Open Tag: color
+Attr 0: id="color"
+Open Tag: reqgrp
+Attr 0: id="reqgrp"
+One line open close tag: <req parent="descriptor">color</req>
+Close Tag: reqgrp
+Close Tag: color
+Close Tag: value
+Open Tag: descriptor
+Attr 0: id="descriptor"
+Open Tag: place
+Attr 0: id="place"
+Open Tag: reqgrp
+Attr 0: id="reqgrp"
+One line open close tag: <req parent="concepts">action</req>
+Close Tag: reqgrp
+Close Tag: place
+Open Tag: direction
+Attr 0: id="direction"
+Open Tag: reqgrp
+Attr 0: id="reqgrp"
+One line open close tag: <req parent="concepts">action</req>
+Close Tag: reqgrp
+Close Tag: direction
+Open Tag: unit
+Attr 0: id="unit"
+Open Tag: distance
+Attr 0: id="distance"
+Open Tag: reqgrp
+Attr 0: id="reqgrp"
+One line open close tag: <req parent="concepts">value</req>
+Close Tag: reqgrp
+Close Tag: distance
+Open Tag: time
+Attr 0: id="time"
+Open Tag: reqgrp
+Attr 0: id="reqgrp"
+One line open close tag: <req parent="concepts">value</req>
+Close Tag: reqgrp
+Close Tag: time
+Close Tag: unit
+Open Tag: color
+Attr 0: id="color"
+Open Tag: reqgrp
+Attr 0: id="reqgrp"
+One line open close tag: <req parent="value">color</req>
+Close Tag: reqgrp
+Close Tag: color
+Close Tag: descriptor
+Close Tag: concepts
+Found link for reqgrp to color child of descriptor
+Found link for reqgrp to color child of value
+Found link for reqgrp to place child of descriptor
+Found link for reqgrp to distance child of unit
+Found link for reqgrp to direction child of descriptor
+Found link for reqgrp to time child of unit
+Found link for reqgrp to direction child of descriptor
+Found link for reqgrp to object child of concepts
+Found link for reqgrp to descriptor child of concepts
+Found link for reqgrp to color child of descriptor
+Found link for reqgrp to action child of concepts
+Found link for reqgrp to action child of concepts
+Found link for reqgrp to value child of concepts
+Found link for reqgrp to value child of concepts
+Found link for reqgrp to color child of value
+Open Tag: words
+Open Tag: word
+One line open close tag: <tense>cm</tense>
+One line open close tag: <tense>centimeters</tense>
+One line open close tag: <concept parent="unit">distance</concept>
+One line open close tag: <pos>noun</pos>
+Close Tag: word
+Open Tag: word
+One line open close tag: <tense>feet</tense>
+One line open close tag: <concept parent="unit">distance</concept>
+One line open close tag: <pos>noun</pos>
+Close Tag: word
+Open Tag: word
+One line open close tag: <tense>forward</tense>
+One line open close tag: <concept parent="descriptor">direction</concept>
+One line open close tag: <pos>noun</pos>
+Close Tag: word
+Open Tag: word
+One line open close tag: <tense>went</tense>
+One line open close tag: <tense>going</tense>
+One line open close tag: <tense>go</tense>
+One line open close tag: <concept parent="movement">travel</concept>
+One line open close tag: <pos>verb</pos>
+Clo

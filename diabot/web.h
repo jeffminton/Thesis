@@ -3,6 +3,7 @@
 #include <map>
 #include <vector>
 #include <stack>
+#include <time.h>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -262,6 +263,21 @@ class Node
 		vector<string> getReqParent();
 
 		/**
+		Function:		getReqPtr
+		Description:	return the vector of pointers to required nodes
+		Return:			vector<Node *> - the vector of pointers
+		*/
+		vector<Node *> getReqPtr();
+
+		/**
+		Function:		getReqPtr
+		Description:	return the pointer to the Node in reqptr at the specified index
+		Parameters:		int idx - the index of reqptr to return
+		Return:			Node * - the pointer to the node requested
+		*/
+		Node * getReqPtr(int idx);
+
+		/**
 		Function:		getNumChildren
 		Description:	returns the number of child nodes
 		Return:			int - number of children
@@ -275,7 +291,7 @@ class Word
 {
 	private:
 		//concept the word points to
-		Node *concept;
+		Node * concept;
 		//part of speech the word represents
 		string pos;
 		//list of this words other tenses
@@ -347,6 +363,8 @@ class Word
 		Parameters:		string tense - the tense to add
 		*/
 		void addTense(string tense);
+
+		void setPos(string posIn);
 };
 
 class Web
@@ -360,6 +378,10 @@ class Web
 		map<string, vector<Word *>> words, wordsBAK;
 		//Util object to use
 		Util myUtil;
+		//log file
+		FILE * outFile;
+		//time
+		const time_t *timeObj;
 		
 		/**
 		 * Function:	splitLines
@@ -421,24 +443,6 @@ class Web
 		bool parseWords(vector<string> xml);
 
 		/**
-		Function:		addWord
-		Description:	add a word to the words map
-		Parameters:		vector<string> tenses - list of tenses for the word
-						string concept - represented concept
-						string parentConcept - concepts parent
-						string pos - the part of speach for the word
-		*/
-		void addWord(vector<string> tenses, string concept, string parentConcept, string pos);
-
-		/**
-		Function:		mergeTenses
-		Description:	merge two vectors of tenses into one that has no repeats
-		Parameters:		vector<string> tenses1 - first set of tenses, stores final merged set
-						vector<string> tenses2 - second set of tenses
-		*/
-		void mergeTenses(vector<string> &tenses1, vector<string> &tenses2);
-
-		/**
 		Function:		postLink
 		Description:	link requirments to other parts of the web
 		Return:			bool - true if success, false if failure
@@ -498,6 +502,15 @@ class Web
 		Node * search(Node *currNode, string nodeName, string nodeParent);
 
 		/**
+		Function:		conceptExists
+		Description:	determine if a concept exists in the web
+		Parameters:		string nodeName - the node to find
+						string nodeParent - the name of nodes parent
+		Return:			bool - true if found else false
+		*/
+		bool conceptExists(string nodeName, string nodeParent);
+
+		/**
 		Function:		writeGraph
 		Description:	generate DOT code to represent the graph visualy
 		Parameters:		string graphFileName - name of file to store dot code in
@@ -534,4 +547,37 @@ class Web
 		Return:			vector<Word *> - the list of meainings
 		*/
 		vector<Word *> getWordList(string word);
+
+		/**
+		Function:		findWords
+		Description:	return a a vector of Word objects that a given tense contains
+						if the tense is in the words map
+		Parameters:		vector<string> tenses - the tenses to search for
+		Return:			vector<Word *> - the list of Word objects
+		*/
+		string findWords(vector<string> tenses);
+
+		/**
+		Function:		addWordNA
+		Description:	add a word to the map and point it to the unimportant word definition
+		Parameters:		string word - the word to add
+		Return:			bool - true success false failure
+		*/
+		bool addWordNA(string wordIn);
+
+		bool addWord(string pos, string wordIn, Word *meaning);
+
+
+		/**
+		Function:		missingWords
+		Description:	if there are any required concepts missing from the list of
+						mapped words return a list of all possible Word * objects
+						that could fill the missing concepts
+		Parameters:		vector<Word *> meanings - the list of mapped known meanings
+		Return:			vector<Word *> - a list of missing meainings that may cpmplete the sentence
+		*/
+		vector<Word *> missingWords(vector<vector<Word *>> meanings);
+
+
+		bool haveReqs(vector<Node *> reqPtrs, vector<Node *> conceptsPresent);
 };
