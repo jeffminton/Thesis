@@ -1,9 +1,9 @@
 <words>
 	<word>
-		<tense>the</tense>
-		<tense>to</tense>
-		<tense>NA</tense>
 		<tense>na</tense>
+		<tense>NA</tense>
+		<tense>to</tense>
+		<tense>the</tense>
 		<concept parent="concepts">na</concept>
 		<pos>na</pos>
 	</word>
@@ -13,8 +13,8 @@
 		<pos>noun</pos>
 	</word>
 	<word>
-		<tense>cm</tense>
 		<tense>centimeters</tense>
+		<tense>cm</tense>
 		<concept parent="unit">distance</concept>
 		<pos>noun</pos>
 	</word>
@@ -29,9 +29,9 @@
 		<pos>noun</pos>
 	</word>
 	<word>
-		<tense>went</tense>
-		<tense>going</tense>
 		<tense>go</tense>
+		<tense>going</tense>
+		<tense>went</tense>
 		<concept parent="movement">travel</concept>
 		<pos>verb</pos>
 	</word>
@@ -56,8 +56,8 @@
 		<pos>noun</pos>
 	</word>
 	<word>
-		<tense>m</tense>
 		<tense>meters</tense>
+		<tense>m</tense>
 		<concept parent="unit">distance</concept>
 		<pos>noun</pos>
 	</word>
@@ -67,9 +67,9 @@
 		<pos>noun</pos>
 	</word>
 	<word>
-		<tense>moving</tense>
-		<tense>moved</tense>
 		<tense>move</tense>
+		<tense>moved</tense>
+		<tense>moving</tense>
 		<concept parent="movement">travel</concept>
 		<pos>verb</pos>
 	</word>
@@ -99,9 +99,9 @@
 		<pos>noun</pos>
 	</word>
 	<word>
-		<tense>turning</tense>
-		<tense>turned</tense>
 		<tense>turn</tense>
+		<tense>turned</tense>
+		<tense>turning</tense>
 		<concept parent="movement">travel</concept>
 		<pos>verb</pos>
 	</word>

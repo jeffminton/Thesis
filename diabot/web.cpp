@@ -1205,6 +1205,11 @@ vector<vector<Word *>> Web::getRealConcept(vector<string> wordsIn)
 	{
 		for(int j = 0; j < possibleWords[i].size(); j++)
 		{
+/////////////
+/////////////
+			//fix this loop to got one reqgrp at a time
+///////////////
+///////////////
 			realWordSet.push_back(vector<Word *>());
 			if(haveReqs(possibleWords[i][j]->getConcept()->getReqPtr(), conceptsPresent) == true)
 			{
@@ -1216,17 +1221,19 @@ vector<vector<Word *>> Web::getRealConcept(vector<string> wordsIn)
 }
 
 
-int Web::getIdxGoodWord(vector<Word *> wordList, vector<Node *> conceptsPresent)
-{
-	for(int i = 0; i < wordList.size(); i++)
-	{
-		if(haveReqs(wordList[i]->getConcept()->getReqPtr(), conceptsPresent) == true)
-		{
-			return i;
-		}
-	}
-	return -1;
-}
+//int Web::getIdxGoodWord(vector<Word *> wordList, vector<Node *> conceptsPresent)
+//{
+//	//for all items in wordList
+//	for(int i = 0; i < wordList.size(); i++)
+//	{
+//		//if the 
+//		if(haveReqs(wordList[i]->getConcept()->getReqPtr(), conceptsPresent) == true)
+//		{
+//			return i;
+//		}
+//	}
+//	return -1;
+//}
 
 
 vector<Node *> Web::getConceptsInWordList(vector<vector<Word *>> wordList)
@@ -1248,4 +1255,28 @@ vector<Node *> Web::getConceptsInWordList(vector<vector<Word *>> wordList)
 	}
 
 	return conceptsPresent;
+}
+
+
+vector<vector<int>> Web::getIdxValidReqGrp(vector<vector<Word *>> wordList)
+{
+	vector<Node *> conceptsPresent = getConceptsInWordList(wordList);
+	vector<vector<int>> idxs;
+
+	for(int i = 0; i < wordList.size(); i++)
+	{
+		idxs.push_back(vector<int>());
+		for(int j = 0; j < wordList[i].size(); j++)
+		{
+			for(int idx = 0; idx < wordList[i][j]->getConcept()->getNumReqGrp(); idx++)
+			{
+				if(haveReqs(wordList[i][j]->getConcept()->getReqGrp(idx)->getReqPtr(), conceptsPresent) == true)
+				{
+					idxs[i].push_back(idx);
+				}
+			}
+		}
+	}
+
+	return idxs;
 }

@@ -548,6 +548,12 @@ class Web
 		*/
 		vector<Word *> getWordList(string word);
 
+		/**
+		Function:		getWordList
+		Description:	return a vector of vectors of Word * objects that the words in a vector map to
+		Parameters:		vector<string> wordsIn - the list of words to search for
+		Return:			vector<vector<Word *>> - the list of meainings
+		*/
 		vector<vector<Word *>> getWordList(vector<string> wordsIn);
 
 		/**
@@ -567,6 +573,15 @@ class Web
 		*/
 		bool addWordNA(string wordIn);
 
+		/**
+		Function:		addWord
+		Description:	add a word to the map, pointing it to the supplied meaning
+		Parameters:		string pos - a string representing the words part of speech i.e. noune, verb, etc.
+						string word - the word to add
+						Word *meaning - the Word * object that should be added 
+							to the array of Word * items that the word maps to
+		Return:			bool - true success false failure
+		*/
 		bool addWord(string pos, string wordIn, Word *meaning);
 
 
@@ -580,15 +595,46 @@ class Web
 		*/
 		vector<Word *> missingWords(vector<vector<Word *>> meanings);
 
-
+		/**
+		Function:		haveReqs
+		Description:	check if the nodes pointed to by reqptrs all exist in the the list of nodes in conceptsPresent
+		Parameters:		vector<Node *> reqPtrs - a vector of pointers to node objects that are part of a concepts requirment group
+						vector<Node *> conceptsPresent - a set of nodes to search in
+		Return:			bool - true success false failure
+		*/
 		bool haveReqs(vector<Node *> reqPtrs, vector<Node *> conceptsPresent);
 
-
+		/**
+		Function:		getRealConcept
+		Description:	get a list of the node objects that have all 
+							requirments met by other concepts that 
+							words in the wordsIn vector map tp
+		Parameters:		vector<string> wordsIn - a set of words to search in
+		Return:			vector<vector<Word *>> - the list ov Word * lists that are have their requirments satisfied
+		*/
 		vector<vector<Word *>> getRealConcept(vector<string> wordsIn);
 
-
+		/**
+		Function:		getConceptsInWordList
+		Description:	get a list of all the concpts that are pointed to by Word * objects in a list
+		Parameters:		vector<vector<Word *>> wordsList - the set of all concepts that words may map to
+		Return:			vector<Node *> - set of Node * objects that are in the list, there may be duplicates
+		*/
 		vector<Node *> getConceptsInWordList(vector<vector<Word *>> wordList);
 
+		///**
+		//Function:		getIdxGoodWord
+		//Description:	get the index
+		//Parameters:		string word - the word to add
+		//Return:			bool - true success false failure
+		//*/
+		//int getIdxGoodWord(vector<Word *> wordList, vector<Node *> conceptsPresent);
 
-		int getIdxGoodWord(vector<Word *> wordList, vector<Node *> conceptsPresent);
+		/**
+		Function:		getIdxValidReqGrp
+		Description:	get a list of the indexes for the reqgrp items in concepts that aresatisfied by the other words int the list
+		Parameters:		vector<vector<Word *>> wordsList - the set of all concepts that words may map to
+		Return:			vector<vector<int>> - the set of indexes
+		*/
+		vector<vector<int>> getIdxValidReqGrp(vector<vector<Word *>> wordList);
 };

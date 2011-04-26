@@ -114,10 +114,10 @@ Found link for reqgrp to value child of concepts
 Found link for reqgrp to color child of value
 Open Tag: words
 Open Tag: word
-One line open close tag: <tense>na</tense>
-One line open close tag: <tense>NA</tense>
-One line open close tag: <tense>to</tense>
 One line open close tag: <tense>the</tense>
+One line open close tag: <tense>to</tense>
+One line open close tag: <tense>NA</tense>
+One line open close tag: <tense>na</tense>
 One line open close tag: <concept parent="concepts">na</concept>
 One line open close tag: <pos>na</pos>
 Close Tag: word
@@ -127,8 +127,8 @@ One line open close tag: <concept parent="concepts">object</concept>
 One line open close tag: <pos>noun</pos>
 Close Tag: word
 Open Tag: word
-One line open close tag: <tense>centimeters</tense>
 One line open close tag: <tense>cm</tense>
+One line open close tag: <tense>centimeters</tense>
 One line open close tag: <concept parent="unit">distance</concept>
 One line open close tag: <pos>noun</pos>
 Close Tag: word
@@ -143,9 +143,9 @@ One line open close tag: <concept parent="descriptor">direction</concept>
 One line open close tag: <pos>noun</pos>
 Close Tag: word
 Open Tag: word
-One line open close tag: <tense>go</tense>
-One line open close tag: <tense>going</tense>
 One line open close tag: <tense>went</tense>
+One line open close tag: <tense>going</tense>
+One line open close tag: <tense>go</tense>
 One line open close tag: <concept parent="movement">travel</concept>
 One line open close tag: <pos>verb</pos>
 Close Tag: word
@@ -170,8 +170,8 @@ One line open close tag: <concept parent="descriptor">direction</concept>
 One line open close tag: <pos>noun</pos>
 Close Tag: word
 Open Tag: word
-One line open close tag: <tense>meters</tense>
 One line open close tag: <tense>m</tense>
+One line open close tag: <tense>meters</tense>
 One line open close tag: <concept parent="unit">distance</concept>
 One line open close tag: <pos>noun</pos>
 Close Tag: word
@@ -181,9 +181,9 @@ One line open close tag: <concept parent="unit">time</concept>
 One line open close tag: <pos>noun</pos>
 Close Tag: word
 Open Tag: word
-One line open close tag: <tense>move</tense>
-One line open close tag: <tense>moved</tense>
 One line open close tag: <tense>moving</tense>
+One line open close tag: <tense>moved</tense>
+One line open close tag: <tense>move</tense>
 One line open close tag: <concept parent="movement">travel</concept>
 One line open close tag: <pos>verb</pos>
 Close Tag: word
@@ -213,9 +213,9 @@ One line open close tag: <concept parent="unit">time</concept>
 One line open close tag: <pos>noun</pos>
 Close Tag: word
 Open Tag: word
-One line open close tag: <tense>turn</tense>
-One line open close tag: <tense>turned</tense>
 One line open close tag: <tense>turning</tense>
+One line open close tag: <tense>turned</tense>
+One line open close tag: <tense>turn</tense>
 One line open close tag: <concept parent="movement">travel</concept>
 One line open close tag: <pos>verb</pos>
 Close Tag: word

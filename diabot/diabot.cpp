@@ -150,6 +150,7 @@ void process(Util myUtil, Web *concepts, Matlab mat, string path)
 	string queryStr;
 	vector<string> queryWords;
 	vector<vector<Word *>> wordConcepts, realMeanings;
+	vector<vector<int>> reqConceptsIdx;
 	vector<Word *> wordsNeeded;
 
 	printf("Ready to talk.\n");
@@ -160,6 +161,7 @@ void process(Util myUtil, Web *concepts, Matlab mat, string path)
 		queryWords = myUtil.split(queryStr, WORD_SPLIT);
 		wordConcepts = getMissingMeanings(concepts, queryWords);
 		realMeanings = concepts->getRealConcept(queryWords);
+		reqConceptsIdx = concepts->getIdxValidReqGrp(realMeanings);
 		for(int i = 0; i < queryWords.size(); i++)
 		{
 			/*for(int j = 0; j < realMeanings[i].size(); j++)

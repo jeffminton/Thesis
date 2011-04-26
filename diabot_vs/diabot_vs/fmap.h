@@ -1,8 +1,6 @@
-#pragma once
 
 #include <map>
-
-using namespace std;
+#include <string>
 
 class myFunctions
 {
@@ -22,7 +20,7 @@ private:
         FuncMap() {
                 descrToFuncMap["travel"]=&myFunctions::travel;
 		}
-        map<string, MemFunc> descrToFuncMap;
+		std::map<std::string, MemFunc> descrToFuncMap;
     };
 
 
