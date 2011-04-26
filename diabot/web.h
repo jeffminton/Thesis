@@ -548,6 +548,8 @@ class Web
 		*/
 		vector<Word *> getWordList(string word);
 
+		vector<vector<Word *>> getWordList(vector<string> wordsIn);
+
 		/**
 		Function:		findWords
 		Description:	return a a vector of Word objects that a given tense contains
@@ -580,4 +582,13 @@ class Web
 
 
 		bool haveReqs(vector<Node *> reqPtrs, vector<Node *> conceptsPresent);
+
+
+		vector<vector<Word *>> getRealConcept(vector<string> wordsIn);
+
+
+		vector<Node *> getConceptsInWordList(vector<vector<Word *>> wordList);
+
+
+		int getIdxGoodWord(vector<Word *> wordList, vector<Node *> conceptsPresent);
 };

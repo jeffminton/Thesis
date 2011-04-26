@@ -1042,6 +1042,18 @@ vector<Word *> Web::getWordList(string wordIn)
 }
 
 
+vector<vector<Word *>> Web::getWordList(vector<string> wordsIn)
+{
+	vector<vector<Word *>> wordsOut;
+	for(int i = 0; i < wordsIn.size(); i++)
+	{
+		wordsOut.push_back(words[wordsIn[i]]);
+	}
+
+	return wordsOut;
+}
+
+
 bool Web::addWordNA(string wordIn)
 {
 	vector<Word *> naWord;
@@ -1060,26 +1072,11 @@ vector<Word *> Web::missingWords(vector<vector<Word *>> meanings)
 	vector<int> meaningsMatchedIdx = vector<int>(meanings.size(), -1);
 	vector<Word *> wordsNeeded;
 	Node *currConcept, *currReqGroup;
-	bool reqMatched;
+	bool reqMatched, haveNulls = false;
 	Word *tempWord;
 	Node *tempConcept;
 
-	//for all vectors in meanings vector
-	for(int i = 0; i < meanings.size(); i++)
-	{
-		if(meanings[i] != (vector<Word *>) NULL)
-		{
-			//for all items in each vector
-			for(int j = 0; j < meanings[i].size(); j++)
-			{
-				if(meanings[i][j]->getConcept()->getName() != "na")
-				{
-					//get the concept that the current Word * item points to
-					conceptsPresent.push_back(meanings[i][j]->getConcept());
-				}
-			}
-		}
-	}
+	conceptsPresent = getConceptsInWordList(meanings);
 
 	//for each list of meanings in the meaning vecotr
 	for(int i = 0; i < meanings.size(); i++)
@@ -1142,7 +1139,6 @@ vector<Word *> Web::missingWords(vector<vector<Word *>> meanings)
 				{
 					for(int m = 0; m < currConcept->getReqGrp(k)->getReqPtr().size(); m++)
 					{
-						
 						wordsNeeded.push_back(new Word("", currConcept->getReqGrp(k)->getReqPtr(m)));
 					}
 				}
@@ -1196,4 +1192,60 @@ bool Web::addWord(string pos, string wordIn, Word *meaning)
 	//assign word set to word in map
 	words[wordIn] = currWordSet;
 	return true;
+}
+
+
+vector<vector<Word *>> Web::getRealConcept(vector<string> wordsIn)
+{
+	int realWordIdx;
+	vector<vector<Word *>> realWordSet, possibleWords = getWordList(wordsIn);
+	vector<Node *> conceptsPresent = getConceptsInWordList(possibleWords);
+
+	for(int i = 0; i < possibleWords.size(); i++)
+	{
+		for(int j = 0; j < possibleWords[i].size(); j++)
+		{
+			realWordSet.push_back(vector<Word *>());
+			if(haveReqs(possibleWords[i][j]->getConcept()->getReqPtr(), conceptsPresent) == true)
+			{
+				realWordSet[i].push_back(possibleWords[i][j]);
+			}
+		}
+	}
+	return realWordSet;
+}
+
+
+int Web::getIdxGoodWord(vector<Word *> wordList, vector<Node *> conceptsPresent)
+{
+	for(int i = 0; i < wordList.size(); i++)
+	{
+		if(haveReqs(wordList[i]->getConcept()->getReqPtr(), conceptsPresent) == true)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
+
+vector<Node *> Web::getConceptsInWordList(vector<vector<Word *>> wordList)
+{
+	vector<Node *> conceptsPresent;
+
+	//for all vectors in meanings vector
+	for(int i = 0; i < wordList.size(); i++)
+	{
+		if(wordList[i] != (vector<Word *>) NULL)
+		{
+			//for all items in each vector
+			for(int j = 0; j < wordList[i].size(); j++)
+			{
+				//get the concept that the current Word * item points to
+				conceptsPresent.push_back(wordList[i][j]->getConcept());
+			}
+		}
+	}
+
+	return conceptsPresent;
 }

@@ -1,14 +1,13 @@
 digraph web{
 "\nconcepts\n" -> "\nna\n";
 "\nconcepts\n" -> "\nobject\n";
-"\nobject\n" -> "\nball\n";
-"\nball\n" [color=blue];
-"ball reqgrp 0" [color=red];
-"\nball\n" -> "ball reqgrp 0" [color=blue];
-"ball reqgrp 0 req 0\n\ncolor from descriptor" [color=green];
-"ball reqgrp 0" -> "ball reqgrp 0 req 0\n\ncolor from descriptor" [color=red];
-"ball reqgrp 0 req 1\n\ncolor from value" [color=green];
-"ball reqgrp 0" -> "ball reqgrp 0 req 1\n\ncolor from value" [color=red];
+"\nobject\n" [color=blue];
+"object reqgrp 0" [color=red];
+"\nobject\n" -> "object reqgrp 0" [color=blue];
+"object reqgrp 0 req 0\n\ncolor from descriptor" [color=green];
+"object reqgrp 0" -> "object reqgrp 0 req 0\n\ncolor from descriptor" [color=red];
+"object reqgrp 0 req 1\n\ncolor from value" [color=green];
+"object reqgrp 0" -> "object reqgrp 0 req 1\n\ncolor from value" [color=red];
 "\nconcepts\n" -> "\naction\n";
 "\naction\n" -> "\nmovement\n";
 "\nmovement\n" -> "\ntravel\n";

@@ -2,12 +2,10 @@
 	<na id="na">
 	</na>
 	<object id="object">
-		<ball id="ball">
-			<reqgrp id="reqgrp">
-				<req parent="descriptor">color</req>
-				<req parent="value">color</req>
-			</reqgrp>
-		</ball>
+		<reqgrp id="reqgrp">
+			<req parent="descriptor">color</req>
+			<req parent="value">color</req>
+		</reqgrp>
 	</object>
 	<action id="action">
 		<movement id="movement">

@@ -149,7 +149,7 @@ void process(Util myUtil, Web *concepts, Matlab mat, string path)
 	char * query = (char *) calloc(2048, sizeof(char));
 	string queryStr;
 	vector<string> queryWords;
-	vector<vector<Word *>> wordConcepts;
+	vector<vector<Word *>> wordConcepts, realMeanings;
 	vector<Word *> wordsNeeded;
 
 	printf("Ready to talk.\n");
@@ -159,6 +159,19 @@ void process(Util myUtil, Web *concepts, Matlab mat, string path)
 		queryStr = query;
 		queryWords = myUtil.split(queryStr, WORD_SPLIT);
 		wordConcepts = getMissingMeanings(concepts, queryWords);
+		realMeanings = concepts->getRealConcept(queryWords);
+		for(int i = 0; i < queryWords.size(); i++)
+		{
+			/*for(int j = 0; j < realMeanings[i].size(); j++)
+			{
+				printf("%s: concept: %s parent: %s pos: %s\n", queryWords[i].c_str()
+					, realMeanings[i][j]->getConcept()->getName().c_str()
+					, realMeanings[i][j]->getConcept()->getParent()->getName().c_str()
+					, realMeanings[i][j]->getPOS().c_str());
+			}*/
+
+
+		}
 
 		cin.getline(query, 2048);
 	}
@@ -179,14 +192,16 @@ int main()
 	/* Parse XML and build web                                                       */
 	/*********************************************************************************/
 
-	if(!concepts->parseXMLFile("C:/Users/ffej/Documents/Thesis/diabot/xml/concepts.xml"))
+	if(!concepts->parseXMLFile("C:/Users/ffej/Documents/Thesis/diabot_vs/diabot_vs/xmlOut/concepts.xml"))
+	//if(!concepts->parseXMLFile("C:/Users/ffej/Documents/Thesis/diabot/xml/concepts.xml"))
 	{
 		printf("concepts parse failed\n");
 		return -1;
 	}
 	printf("concept parse done\n");
 
-	if(!concepts->parseXMLFile("C:/Users/ffej/Documents/Thesis/diabot/xml/words.xml"))
+	if(!concepts->parseXMLFile("C:/Users/ffej/Documents/Thesis/diabot_vs/diabot_vs/xmlOut/words.xml"))
+	//if(!concepts->parseXMLFile("C:/Users/ffej/Documents/Thesis/diabot/xml/words.xml"))
 	{
 		printf("words parse failed\n");
 		return -1;
