@@ -24,7 +24,7 @@
     <ClInclude Include="..\..\diabot\matlab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="fmap.h">
+    <ClInclude Include="..\..\diabot\fmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -39,9 +39,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\diabot\matlab.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="fmap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

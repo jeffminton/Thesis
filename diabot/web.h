@@ -1,5 +1,8 @@
 //web.h
 
+#ifndef WEB_H
+#define WEB_H
+
 #include <map>
 #include <vector>
 #include <stack>
@@ -7,8 +10,8 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include <gvc.h>
 #include "lib\util.h"
+#include "fmap.h"
 
 using namespace std;
 
@@ -107,7 +110,10 @@ class Node
 		Node *parent;
 		//name of parent node
 		string parentName;
-		
+		//pointer to execcution function
+		FMap::ExecFunc func;
+		//fmap function used to access execution function pointers
+		FMap functionMap;
 	
 	public:
 		/**
@@ -283,6 +289,8 @@ class Node
 		Return:			int - number of children
 		*/
 		int getNumChildren();
+
+		FMap::ExecFunc getExecFunc();
 };
 
 
@@ -638,3 +646,6 @@ class Web
 		*/
 		vector<vector<int>> getIdxValidReqGrp(vector<vector<Word *>> wordList);
 };
+
+
+#endif

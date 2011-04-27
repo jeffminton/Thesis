@@ -71,10 +71,12 @@ Node::Node()
 	reqPtr = vector<Node *>();
 	parent = NULL;
 	parentName = "";
+	func = (FMap::ExecFunc) NULL;
 }
 
 Node::Node(string name, Node *nodeParent)
 {
+	
 	attrList = new Attr();
 	nodeName = name;
 	children = map<string, Node *>();
@@ -93,6 +95,7 @@ Node::Node(string name, Node *nodeParent)
 		parentName = "";
 	}
 	addAttr("id", nodeName);
+	func = functionMap.getFunc(name);
 }
 
 Node::Node(Node &n)
@@ -107,6 +110,7 @@ Node::Node(Node &n)
 	reqPtr = n.reqPtr;
 	parent = n.getParent();
 	parentName = n.parentName;
+	func = n.func;
 }
 
 Node::~Node()
@@ -211,6 +215,11 @@ vector<Node *> Node::getReqPtr()
 Node * Node::getReqPtr(int idx)
 {
 	return reqPtr[idx];
+}
+
+FMap::ExecFunc Node::getExecFunc()
+{
+	return func;
 }
 
 
@@ -1203,17 +1212,16 @@ vector<vector<Word *>> Web::getRealConcept(vector<string> wordsIn)
 
 	for(int i = 0; i < possibleWords.size(); i++)
 	{
+		realWordSet.push_back(vector<Word *>());
 		for(int j = 0; j < possibleWords[i].size(); j++)
 		{
-/////////////
-/////////////
-			//fix this loop to got one reqgrp at a time
-///////////////
-///////////////
-			realWordSet.push_back(vector<Word *>());
-			if(haveReqs(possibleWords[i][j]->getConcept()->getReqPtr(), conceptsPresent) == true)
+			for(int k = 0; k < possibleWords[i][j]->getConcept()->getNumReqGrp(); k++)
 			{
-				realWordSet[i].push_back(possibleWords[i][j]);
+				if(haveReqs(possibleWords[i][j]->getConcept()->getReqGrp(k)->getReqPtr(), conceptsPresent) == true)
+				{
+					realWordSet[i].push_back(possibleWords[i][j]);
+					break;
+				}
 			}
 		}
 	}

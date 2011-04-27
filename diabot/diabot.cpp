@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <engine.h>
+//#include <engine.h>
 #include "web.h"
 #include "matlab.h"
 //#include "lib\util.h"
@@ -164,14 +164,6 @@ void process(Util myUtil, Web *concepts, Matlab mat, string path)
 		reqConceptsIdx = concepts->getIdxValidReqGrp(realMeanings);
 		for(int i = 0; i < queryWords.size(); i++)
 		{
-			/*for(int j = 0; j < realMeanings[i].size(); j++)
-			{
-				printf("%s: concept: %s parent: %s pos: %s\n", queryWords[i].c_str()
-					, realMeanings[i][j]->getConcept()->getName().c_str()
-					, realMeanings[i][j]->getConcept()->getParent()->getName().c_str()
-					, realMeanings[i][j]->getPOS().c_str());
-			}*/
-
 
 		}
 

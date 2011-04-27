@@ -6,14 +6,21 @@ class myFunctions
 {
 public:
 	myFunctions();
-	void travel();
+	int travel();
+	int color();
+	int object();
+	int number();
+	int place();
+	int direction();
+	int distance();
+	int time();
 };
 
 
-class FMap
+static class FMap
 {
 private:
-	typedef void (myFunctions::*MemFunc)();
+	typedef int (myFunctions::*MemFunc)();
 
 	class FuncMap {
     public:

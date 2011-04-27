@@ -75,17 +75,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\diabot\fmap.h" />
     <ClInclude Include="..\..\diabot\lib\util.h" />
     <ClInclude Include="..\..\diabot\matlab.h" />
     <ClInclude Include="..\..\diabot\web.h" />
-    <ClInclude Include="fmap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\diabot\diabot.cpp" />
     <ClCompile Include="..\..\diabot\lib\util.cpp" />
     <ClCompile Include="..\..\diabot\matlab.cpp" />
     <ClCompile Include="..\..\diabot\web.cpp" />
-    <ClCompile Include="fmap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\diabot\xml\concepts.xml">
