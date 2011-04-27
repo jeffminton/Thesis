@@ -1,5 +1,13 @@
 <concepts id="concepts">
-	<action id="action">
+  <na id="na">
+  </na>
+  <object id="object">
+    <reqgrp id="reqgrp">
+      <req parent="descriptor">color</req>
+      <req parent="value">color</req>
+    </reqgrp>
+  </object>
+  <action id="action">
 		<movement id="movement">
 			<travel id="travel">
 				<reqgrp id="reqgrp">
@@ -13,6 +21,9 @@
 					<req parent="unit">time</req>
 					<req parent="descriptor">direction</req>
 				</reqgrp>
+        <reqgrp id="reqgrp">
+          <req parent="concepts">object</req>
+        </reqgrp>
 			</travel>
 		</movement>
 	</action>

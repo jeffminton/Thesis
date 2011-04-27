@@ -77,4 +77,16 @@
 		<concept parent="movement">travel</concept>
 		<pos>verb</pos>
 	</word>
+  <word>
+    <tense>red</tense>
+    <concept parent="value">color</concept>
+    <concept parent="descriptor">color</concept>
+    <pos>nount</pos>
+  </word>
+  <word>
+    <tense>NA</tense>
+    <tense>na</tense>
+    <concept parent="concepts">na</concept>
+    <pos>na</pos>
+  </word>
 </words>

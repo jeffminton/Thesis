@@ -24,6 +24,9 @@
     <ClInclude Include="..\..\diabot\matlab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\diabot\fmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\diabot\diabot.cpp">

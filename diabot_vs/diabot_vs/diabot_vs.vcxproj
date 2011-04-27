@@ -75,6 +75,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\diabot\fmap.h" />
     <ClInclude Include="..\..\diabot\lib\util.h" />
     <ClInclude Include="..\..\diabot\matlab.h" />
     <ClInclude Include="..\..\diabot\web.h" />
