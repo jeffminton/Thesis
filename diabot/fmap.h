@@ -4,67 +4,62 @@
 
 #include <map>
 #include <string>
+#include <vector>
 //#include "web.h"
 //#include "matlab.h"
 
+using namespace std;
+
+class Web;
+class Matlab;
+class Word;
+class Node;
+
 class ExecFunctions
 {
-//private:
-//	FMap functionMap;
-
 public:
 	ExecFunctions(){}
-	int travel(){
-		return 0;
-	}
-	int color(){
-		return 0;
-	}
-	int object(){
-		return 0;
-	}
-	int number(){
-		return 0;
-	}
-	int place(){
-		return 0;
-	}
-	int direction(){
-		return 0;
-	}
-	int distance(){
-		return 0;
-	}
-	int time(){
-		return 0;
-	}
+	/**
+	Function:		travel
+	*/
+	int travel(Web *concepts, Matlab *mat, Word * words, int reqIdx, string theWord, vector<string> *dependsMet);
+	/**
+	Function:		color
+	*/
+	int color(Web *concepts, Matlab *mat, Word * words, int reqIdx, string theWord, vector<string> *dependsMet);
+	/**
+	Function:		object
+	*/
+	int object(Web *concepts, Matlab *mat, Word * words, int reqIdx, string theWord, vector<string> *dependsMet);
+	/**
+	Function:		number
+	*/
+	int number(Web *concepts, Matlab *mat, Word * words, int reqIdx, string theWord, vector<string> *dependsMet);
+	/**
+	Function:		place
+	*/
+	int place(Web *concepts, Matlab *mat, Word * words, int reqIdx, string theWord, vector<string> *dependsMet);
+	/**
+	Function:		direction
+	*/
+	int direction(Web *concepts, Matlab *mat, Word * words, int reqIdx, string theWord, vector<string> *dependsMet);
+	/**
+	Function:		distance
+	*/
+	int distance(Web *concepts, Matlab *mat, Word * words, int reqIdx, string theWord, vector<string> *dependsMet);
+	/**
+	Function:		time
+	*/
+	int time(Web *concepts, Matlab *mat, Word * words, int reqIdx, string theWord, vector<string> *dependsMet);
 };
 
 
 class FMap
 {
-
 public:
-	typedef int (ExecFunctions::*ExecFunc)();
+	typedef int (ExecFunctions::*ExecFunc)(Web *, Matlab *, Word *, int, string, vector<string> *);
 	FMap(void) {
 		theFuncMap = FuncMap();
-		for(theFuncMap.funcMapIter = theFuncMap.descrToFuncMap.begin();
-			theFuncMap.funcMapIter != theFuncMap.descrToFuncMap.end();
-			theFuncMap.funcMapIter++) {
-				funcCallStatus[(*theFuncMap.funcMapIter).first] = false;
-		}
-	}
-	void setStatusBit(string funcName) {
-		funcCallStatus[funcName] = true;
-	}
-	bool getStatusBit(string funcName) {
-		return funcCallStatus[funcName];
-	}
-	void reset() {
-		for(statIter = funcCallStatus.begin();
-			statIter != funcCallStatus.end(); statIter++) {
-				funcCallStatus[(*statIter).first] = false;
-		}
 	}
 	~FMap(void){}
 	ExecFunc getFunc(string funcName){
@@ -85,12 +80,10 @@ private:
 				descrToFuncMap["time"] = &ExecFunctions::time;
 		}
 		std::map<std::string, ExecFunc> descrToFuncMap;
-		std::map<std::string, ExecFunc>::iterator funcMapIter;
     };
-	FuncMap theFuncMap;
-	map<string, bool> funcCallStatus;
-	map<string, bool>::iterator statIter;
 
+public:
+	FuncMap theFuncMap;
 };
 
 

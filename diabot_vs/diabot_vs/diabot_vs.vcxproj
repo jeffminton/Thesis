@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\diabot\diabot.cpp" />
+    <ClCompile Include="..\..\diabot\fmap.cpp" />
     <ClCompile Include="..\..\diabot\lib\util.cpp" />
     <ClCompile Include="..\..\diabot\matlab.cpp" />
     <ClCompile Include="..\..\diabot\web.cpp" />
