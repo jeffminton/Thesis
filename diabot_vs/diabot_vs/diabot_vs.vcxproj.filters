@@ -41,6 +41,9 @@
     <ClCompile Include="..\..\diabot\matlab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\diabot\fmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\diabot\xml\concepts.xml">

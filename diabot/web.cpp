@@ -95,7 +95,8 @@ Node::Node(string name, Node *nodeParent)
 		parentName = "";
 	}
 	addAttr("id", nodeName);
-	func = functionMap.getFunc(name);
+	func = (FMap::ExecFunc) NULL;
+	//func = functionMap->getFunc(name);
 }
 
 Node::Node(Node &n)
@@ -305,6 +306,7 @@ Web::Web()
 	curr = NULL;
 	myUtil = Util();
 	outFile = fopen("out.log", "w");
+	functionMap = new FMap();
 }
 
 Web::Web(Web &w)
@@ -314,6 +316,7 @@ Web::Web(Web &w)
 	words = w.words;
 	myUtil = w.myUtil;
 	outFile = fopen("out.log", "w");
+	functionMap = new FMap();
 }
 
 Web::~Web()

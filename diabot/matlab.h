@@ -1,3 +1,6 @@
+#ifndef MATLAB_H
+#define MATLAB_H
+
 #include <string>
 #include <engine.h>
 
@@ -17,3 +20,4 @@ public:
 	void matExec(string command);
 };
 
+#endif

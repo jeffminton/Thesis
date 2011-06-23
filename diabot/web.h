@@ -113,7 +113,7 @@ class Node
 		//pointer to execcution function
 		FMap::ExecFunc func;
 		//fmap function used to access execution function pointers
-		FMap functionMap;
+		FMap *functionMap;
 	
 	public:
 		/**
@@ -402,6 +402,9 @@ class Web
 
 			
 	public:	
+
+		//structure wide function map
+		FMap *functionMap;
 	
 		/**
 		 * Function:	Web
