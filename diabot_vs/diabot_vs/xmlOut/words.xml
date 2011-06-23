@@ -84,6 +84,11 @@
 		<pos>nount</pos>
 	</word>
 	<word>
+		<tense>red</tense>
+		<concept parent="value">color</concept>
+		<pos>noun</pos>
+	</word>
+	<word>
 		<tense>reverse</tense>
 		<concept parent="descriptor">direction</concept>
 		<pos>noun</pos>

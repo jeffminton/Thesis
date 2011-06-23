@@ -2,6 +2,7 @@
 //#include <engine.h>
 #include "web.h"
 #include "matlab.h"
+#include "fmap.h"
 //#include "lib\util.h"
 
 
@@ -87,6 +88,10 @@ vector<vector<Word *>> getMissingMeanings(Web *concepts, vector<string> words)
 					printf("%d: concept: %s, concept's parent: %s\n", i + 1, wordsNeeded[i]->getConcept()->getName().c_str(), wordsNeeded[i]->getConcept()->getParent()->getName().c_str());
 				}
 				printf("%d: none of the above\n\n", wordsNeeded.size() + 1);
+				printf("Enter the number coresponding to a word you wish to define: ");
+				cin >> wordChoice;
+				printf("Enter the number coresponding to the concept the word represents: ");
+				cin >> conceptChoice;
 			}
 			else if(needConcepts == true)
 			{
@@ -96,16 +101,19 @@ vector<vector<Word *>> getMissingMeanings(Web *concepts, vector<string> words)
 				{
 					printf("%d: concept: %s, concept's parent: %s\n", i + 1, wordsNeeded[i]->getConcept()->getName().c_str(), wordsNeeded[i]->getConcept()->getParent()->getName().c_str());
 				}
+				printf("%d: none of these concepts are represented by the words in the sentence\n", wordsNeeded.size() + 1);
 				printf("\nthe following words are in the sentence\n");
 				for(int i = 0; i < unknownWords.size(); i++)
 				{
 					printf("%d: \"%s\"\n", i + 1, unknownWords[i].c_str());
 				}
+				printf("Enter the number coresponding to the meaning you wish to assign a word to: ");
+				cin >> conceptChoice;
+				printf("Enter the number coresponding to a word you wish to define: ");
+				cin >> wordChoice;
 			}
-			printf("Enter the number coresponding to a word you wish to define: ");
-			cin >> wordChoice;
-			printf("Enter the number coresponding to the words meaning: ");
-			cin >> conceptChoice;
+			
+			
 
 			if(wordChoice >= unknownWords.size() + 1)
 			{
@@ -144,8 +152,14 @@ vector<vector<Word *>> getMissingMeanings(Web *concepts, vector<string> words)
 }
 
 
-void process(Util myUtil, Web *concepts, Matlab mat, string path)
+void process(Util myUtil, Web *concepts, Matlab *mat, string path)
 {
+	int funcPtrRet;
+	bool dependsProcessed = false;
+	vector<string> *dependsDone = new vector<string>();
+	FMap functionMap = FMap();
+	FMap::ExecFunc funcToCall;
+	ExecFunctions *ef;
 	char * query = (char *) calloc(2048, sizeof(char));
 	string queryStr;
 	vector<string> queryWords;
@@ -162,9 +176,24 @@ void process(Util myUtil, Web *concepts, Matlab mat, string path)
 		wordConcepts = getMissingMeanings(concepts, queryWords);
 		realMeanings = concepts->getRealConcept(queryWords);
 		reqConceptsIdx = concepts->getIdxValidReqGrp(realMeanings);
-		for(int i = 0; i < queryWords.size(); i++)
-		{
 
+		for(int i = 0; i < realMeanings.size(); i++){
+			for(int j = 0; j < realMeanings[i].size(); j++){
+				printf("%s - concept: %s concepts parent: %s\n", queryWords[i].c_str()
+					, realMeanings[i][j]->getConcept()->getName().c_str()
+					, realMeanings[i][j]->getConcept()->getParent()->getName().c_str());
+			}
+		}
+
+		while(dependsProcessed == false){
+			dependsProcessed = true;
+			for(int i = 0; i < realMeanings.size(); i++)
+			{
+				for(int j = 0; j < realMeanings[i].size(); j++){
+					funcToCall = functionMap.theFuncMap.descrToFuncMap[realMeanings[i][j]->getConcept()->getName()];
+					//funcPtrRet = (*funcToCall)(concepts, mat, realMeanings[i][j], reqConceptsIdx[i][j], queryWords[i], dependsDone);
+				}
+			}
 		}
 
 		cin.getline(query, 2048);
@@ -179,7 +208,7 @@ int main()
 	bool result;
 	Util myUtils = Util();
 	Web *concepts = new Web();
-	Matlab mat = Matlab();
+	Matlab *mat = new Matlab();
 	string thesisPath = "C:/Users/ffej/Documents/Thesis/matlab/";
 	
 	/*********************************************************************************/
